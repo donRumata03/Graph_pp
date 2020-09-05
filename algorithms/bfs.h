@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "../data_structures/graph_base.h"
+// #include "../data_structures/graph_base.h"
+#include "../data_structures/graphs.h"
 
 template<class Callable, class Graph_Element_T>
 void bfs(const graph_matrix<Graph_Element_T>& graph, Callable callback) {

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <data_structures/graphs.h>
 #include "../data_structures/graph_base.h"
 
 inline void graph_creation_test() {
@@ -29,7 +30,7 @@ inline void graph_output_test() {
 	std::cout << "graph[1][3]: " << graph.get_edge(1, 3) << std::endl;
 
 	///////////////////////////////// Big digits /////////////////////////////////
-	auto big_graph = max_int_adj_matrix_graph(5);
+	auto big_graph = max_int_weighted_matrix_graph(5);
 	big_graph.set_bidirectional_edge(1, 4, 239);
 	big_graph.set_bidirectional_edge(2, 3, 566);
 
@@ -58,7 +59,14 @@ inline void graph_operator_test () {
 }
 
 void graph_input_test() {
-	max_int_adj_matrix_graph graph(3);
-	std::cin >> graph;
+	max_int_weighted_matrix_graph graph(3);
+
+	// std::cin >> graph;
+
+	graph.input_from_matrix(std::cin);
+	std::cout << graph << std::endl;
+
+	std::cout << "First colon: " << graph[0][0] << " " << graph[0][1] << " " << graph[0][2] << std::endl;
+	std::cout << "First row: " << graph[0][0] << " " << graph[1][0] << " " << graph[2][0] << std::endl;
 
 }
