@@ -193,6 +193,7 @@ public:
 		static_assert(std::is_same_v<T, bool> , "T (graph template parameter) should bool to use this input mode");
 
 		// TODO: make filling function
+		// TODO: split into 2 functions: fill and adding edges from edge list
 		for (auto& p : edges) {
 			auto[i, j] = p;
 

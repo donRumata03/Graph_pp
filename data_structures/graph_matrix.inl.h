@@ -59,13 +59,17 @@ void graph_matrix<T>::dealloc ()
 template < class T >
 graph_matrix<T>::~graph_matrix ()
 {
+	std::cout << "Deleting matrix..." << std::endl;
+
 	dealloc();
 }
 
 template < class T >
 graph_matrix<T>::graph_matrix (const graph_matrix &other)
 {
-	alloc(other.size);
+	// std::cout << "Matrix copy constructor..." << std::endl;
+
+	alloc(other.n);
 
 	for (size_t i = 0; i < n; ++i) {
 		std::copy(std::execution::par_unseq, other.data[i], other.data[i] + n, this->data[i]);
@@ -75,19 +79,24 @@ graph_matrix<T>::graph_matrix (const graph_matrix &other)
 template < class T >
 graph_matrix<T>::graph_matrix (graph_matrix &&other) noexcept
 {
-	// Delete old data from "this":
+	// std::cout << "Matrix move constructor..." << std::endl;
 
-	// Copy:
+	data = other.data;
+	n = other.n;
 
+	other.data = nullptr;
+	other.n = 0;
 }
 
 template < class T >
 graph_matrix<T> &graph_matrix<T>::operator= (const graph_matrix &other)
 {
+	// std::cout << "Matrix copy operator..." << std::endl;
+
 	if (&other != this) {
 		dealloc();
 
-		alloc(n);
+		alloc(other.n);
 
 		// Actual copying:
 		for (size_t i = 0; i < n; ++i) {
@@ -101,6 +110,8 @@ graph_matrix<T> &graph_matrix<T>::operator= (const graph_matrix &other)
 template < class T >
 graph_matrix<T> &graph_matrix<T>::operator= (graph_matrix &&other) noexcept
 {
+	// std::cout << "Matrix move operator..." << std::endl;
+
 	if (this != &other) {
 		// Deallocate previous memory:
 		dealloc();

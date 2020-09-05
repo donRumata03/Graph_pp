@@ -5,7 +5,7 @@
 #pragma once
 
 #include <data_structures/graphs.h>
-#include "../data_structures/graph_base.h"
+#include "data_structures/graph_base.h"
 
 inline void graph_creation_test() {
 	auto graph = adj_matrix_graph(5);
