@@ -16,7 +16,7 @@ int main ()
 	// test_matrix_graph_move_assignment_operator();
 
 	// test_matrix_graph_copy_constructor();
-	test_matrix_graph_move_constructor();
+	// test_matrix_graph_move_constructor();
 
 
 	return 0;

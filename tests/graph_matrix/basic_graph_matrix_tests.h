@@ -58,7 +58,7 @@ inline void graph_operator_test () {
 	std::cout << graph[2][0] << " " << graph[2][1] << " " << graph[2][2] << std::endl;
 }
 
-void graph_input_test() {
+inline void graph_input_test() {
 	max_int_weighted_matrix_graph graph(3);
 
 	// std::cin >> graph;
@@ -70,3 +70,19 @@ void graph_input_test() {
 	std::cout << "First row: " << graph[0][0] << " " << graph[1][0] << " " << graph[2][0] << std::endl;
 
 }
+
+inline void bool_graph_edge_adding_test() {
+	adj_matrix_graph graph(3);
+
+}
+
+inline void weighted_graph_edge_adding_test() {
+	max_int_weighted_matrix_graph graph(3);
+
+	std::vector<std::pair<long long, long long>> edges_to_add = {
+			{0., 0.}
+	};
+
+	graph.add_edges_from_list<graph_matrix<long long>::input_one_directional>();
+}
+

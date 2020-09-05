@@ -7,6 +7,8 @@
 /// ********************************************* Memory management: *********************************************
 
 
+#include "graph_matrix.h"
+
 template < class T >
 void graph_matrix<T>::fill_matrix (const T &element)
 {
@@ -52,8 +54,16 @@ void graph_matrix<T>::dealloc ()
 	n = 0;
 }
 
+/// ********************************************* Constructors: *********************************************
 
-/// _______________________________________________ Moving / copying / freeing OOP stuff: _______________________________________________
+template < class T >
+graph_matrix<T>::graph_matrix (size_t size) : n(size) {
+	// Allocate the array and initialize with the default value of type T:
+	alloc_and_fill(size);
+}
+
+
+/// ********************************************* Moving / copying / freeing OOP stuff: *********************************************
 
 
 template < class T >
@@ -128,5 +138,157 @@ graph_matrix<T> &graph_matrix<T>::operator= (graph_matrix &&other) noexcept
 	return *this;
 }
 
+
+/// ********************************************* Memory management API for user: *********************************************
+
+template < class T >
+void graph_matrix<T>::resize (size_t new_size)
+{
+	dealloc();
+	alloc_and_fill(new_size);
+}
+
+template < class T >
+void graph_matrix<T>::release ()
+{
+	dealloc();
+}
+
+template < class T >
+void graph_matrix<T>::fill_default ()
+{
+	fill_matrix({});
+}
+
+/// ********************************************* Edge access for user: *********************************************
+
+
+template < class T >
+T &graph_matrix<T>::get_edge (size_t from, size_t to) const
+{
+	assert(from < n);
+	assert(to < n);
+
+	return const_cast<T&>(data[from][to]);
+}
+
+template < class T >
+void graph_matrix<T>::set_directed_edge (size_t from, size_t to, const T &value)
+{
+	assert(from < n);
+	assert(to < n);
+
+	data[from][to] = value;
+}
+
+template < class T >
+void graph_matrix<T>::set_bidirectional_edge (size_t from, size_t to, const T &value)
+{
+	assert(from < n);
+	assert(to < n);
+
+	data[from][to] = value;
+	data[to][from] = value;
+}
+
+/// ********************************************* Graph outputting: *********************************************
+
+template<class Type>
+std::ostream& operator<< (std::ostream &os, const graph_matrix<Type> &graph)
+{
+	constexpr const char* separator = "__________________________________";
+	os << separator << std::endl;
+	os << "Adjustment matrix graph representation <" << graph.n << ">:" << std::endl;
+
+	// Determine if it has big digits:
+	bool has_big_digits = false;
+
+	if constexpr (std::is_integral_v<Type> && !std::is_same_v<bool, Type>) {
+		for (size_t i = 0; i < graph.n; i++) {
+			bool is_broken = false;
+			for (size_t j = 0; j < graph.n; j++) {
+				if (graph.get_edge(i, j) > 99 || graph.get_edge(i, j) < -9) has_big_digits = true;
+				is_broken = true;
+				break;
+			}
+			if (is_broken) break;
+		}
+	}
+
+	if constexpr (std::is_floating_point_v<Type>) {
+		os << std::setprecision(2);
+	}
+
+	// std::cout << has_big_digits << std::endl;
+
+	// The actual matrix output:
+	for (size_t i = 0; i < graph.n; i++) {
+		for (size_t j = 0; j < graph.n; j++) {
+			// For bool:
+			if constexpr (std::is_same_v<bool, Type>) {
+				os << (graph.get_edge(j, i) ? "1" : "0");
+				if (j != graph.n - 1) os << " ";
+			}
+
+				// For non-bools:
+			else {
+				os << graph.get_edge(j, i);
+
+				// For little-size stuff: numbers from [-9, 99]
+				if (std::is_integral_v<Type> && !has_big_digits) {
+					if (j != graph.n - 1) os << " ";
+				}
+
+				else {
+					if (j != graph.n - 1) os << "\t";
+				}
+			}
+		}
+		os << std::endl;
+	}
+
+	os << separator << std::endl;
+
+	return os;
+}
+
+
+/// ********************************************* Graph inputting from parsed data: *********************************************
+
+template < class T >
+template < class input_directionality_type, class Vertex_indexing_type >
+void
+graph_matrix<T>::add_edges_from_list (const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
+{
+	static_assert(
+			std::is_same_v<input_directionality_type, input_bidirectional> || std::is_same_v<input_directionality_type, input_one_directional>,
+			"input_directionality_type should be one of: input_bidirectional, input_one_directional"
+	);
+
+	static_assert(std::is_integral_v<Vertex_indexing_type>, "Vertex indexing type should be an integral type");
+	static_assert(std::is_same_v<T, bool> , "T (graph template parameter) should bool to use this input mode");
+
+	// TODO: make filling function
+	// TODO: split into 2 functions: fill and adding edges from edge list
+	for (auto& p : edges) {
+		auto[i, j] = p;
+
+		data[i][j] =
+
+		if constexpr (std::is_same_v<input_directionality_type, input_bidirectional>) {
+			data[j][i] = data[i][j];
+		}
+	}
+}
+
+
+template <class T>
+template <class input_directionality_type, class Vertex_indexing_type>
+void graph_matrix<T>::update_from_edge_list (const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
+{
+	/// Reset all edges and add the ones from the list:
+	fill_default();
+	add_edges_from_list<input_directionality_type>(edges);
+}
 
 
