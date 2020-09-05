@@ -5,7 +5,9 @@
 int main ()
 {
 	// graph_creation_test();
-	graph_output_test();
+	// graph_output_test();
+
+	graph_operator_test();
 
 	return 0;
 }

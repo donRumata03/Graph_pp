@@ -7,7 +7,7 @@
 #include "../data_structures/graph_base.h"
 
 inline void graph_creation_test() {
-	auto graph = non_weighted_adj_matrix_graph(5);
+	auto graph = adj_matrix_graph(5);
 
 	graph.set_directed_edge(3, 2, true);
 
@@ -16,7 +16,7 @@ inline void graph_creation_test() {
 }
 
 inline void graph_output_test() {
-	auto graph = non_weighted_adj_matrix_graph(5);
+	auto graph = adj_matrix_graph(5);
 
 	graph.set_directed_edge(3, 2, true);
 	graph.set_directed_edge(4, 1, true);
@@ -37,13 +37,15 @@ inline void graph_output_test() {
 }
 
 inline void graph_operator_test () {
-	auto graph = non_weighted_adj_matrix_graph(5);
+	auto graph = adj_matrix_graph(5);
 
 	graph.set_directed_edge(3, 2, true);
 	graph.set_directed_edge(4, 1, true);
 	graph.set_directed_edge(2, 1, true);
 
 	graph.set_bidirectional_edge(3, 1, true);
+
+	std::cout << graph << std::endl;
 
 	auto col = graph[3];
 	std::cout << typeid(col).name() << std::endl;
@@ -56,5 +58,7 @@ inline void graph_operator_test () {
 }
 
 void graph_input_test() {
+	max_int_adj_matrix_graph graph(3);
+	std::cin >> graph;
 
 }

@@ -12,11 +12,13 @@
 #include <ostream>
 
 template <class T>
-struct adj_matrix_graph {
+struct graph_matrix {
+	/// Data:
 	T** data = nullptr;
 	size_t n = 0;
 
-	explicit adj_matrix_graph(size_t size) : n(size) {
+	/// Constructing:
+	explicit graph_matrix(size_t size) : n(size) {
 		// Allocate the array and initialize with false:
 		data = new T* [n];
 
@@ -25,6 +27,41 @@ struct adj_matrix_graph {
 			std::fill(std::execution::par_unseq, data[i], data[i] + n, T{});
 		}
 	}
+
+	/// Moving / copying / freeing stuff:
+	~graph_matrix() {
+		if (!data) {
+			n = 0;
+			return;
+		}
+
+		for (size_t i = 0; i < n; ++i) {
+			delete [] data[i];
+			data[i] = nullptr;
+		}
+		delete data;
+		data = nullptr;
+
+		n = 0;
+	}
+
+	// Copy constructor:
+	graph_matrix(const graph_matrix& other) {
+		// Delete old data from "this":
+
+		// Copy:
+
+	}
+
+	// Move constructor:
+	graph_matrix(graph_matrix&& other)  noexcept {
+		// Delete old data from "this":
+
+		// Copy:
+
+	}
+
+
 
 
 	[[nodiscard]] T& get_edge(size_t from, size_t to) const
@@ -67,7 +104,7 @@ struct adj_matrix_graph {
 		return col_t<T> { data[index], n };
 	}
 
-	friend std::ostream &operator<< (std::ostream &os, const adj_matrix_graph &graph)
+	friend std::ostream &operator<< (std::ostream &os, const graph_matrix &graph)
 	{
 		constexpr const char* separator = "__________________________________";
 		os << separator << std::endl;
@@ -80,11 +117,9 @@ struct adj_matrix_graph {
 			for (size_t i = 0; i < graph.n; i++) {
 				bool is_broken = false;
 				for (size_t j = 0; j < graph.n; j++) {
-					if (graph.get_edge(i, j) > 9 || graph.get_edge(i, j) < 0) {
-						has_big_digits = true;
-						is_broken = true;
-						break;
-					}
+					if (graph.get_edge(i, j) > 9 || graph.get_edge(i, j) < 0) has_big_digits = true;
+					is_broken = true;
+					break;
 				}
 				if (is_broken) break;
 			}
@@ -119,12 +154,63 @@ struct adj_matrix_graph {
 	}
 	// friend std::ostream& operator << (std::ostream& os, const adj_matrix_graph& graph);
 
-	// TODO: add stream input operator!!!
+
+	/// Graph inputing:
+	struct input_bidirectional {};
+	struct input_one_directional {};
+
+
+	template<class input_directionality_type>
+	void input_from_matrix(std::istream& is) {
+		// T temp_element;
+		for (size_t i = 0; i < n; ++i) {
+			for (size_t j = 0; j < n; ++j) {
+				// cin >> temp_element;
+				// data[i][j] = temp_element;
+				is >> data[i][j];
+			}
+		}
+	}
+
+	template<class input_directionality_type, class Vertex_indexing_type>
+	void update_from_edge_list(const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>>& edges) {
+		static_assert(
+				std::is_same_v<input_directionality_type, input_bidirectional> || std::is_same_v<input_directionality_type, input_one_directional>,
+				"input_directionality_type should be one of: input_bidirectional, input_one_directional"
+		);
+
+		static_assert(std::is_integral_v<Vertex_indexing_type>, "Vertex indexing type should be an integral type");
+		static_assert(std::is_same_v<T, bool> , "T (graph template parameter) should bool to use this input mode");
+
+		// TODO: make filling function
+		for (auto& p : edges) {
+			auto[i, j] = p;
+
+			data[]
+
+			if constexpr (std::is_same_v<input_directionality_type, input_bidirectional>) {
+				data[j][i] = data[i][j];
+			}
+		}
+	}
+
+
+	std::istream& operator >> (std::istream& os) {
+//		T temp;
+//		for (size_t i = 0; i < n; ++i) {
+//			for (size_t j = 0; j < n; ++j) {
+//				cin >> temp;
+//				data[i][j] = temp;
+//			}
+//		}
+		input_from_matrix(os);
+		return os;
+	}
 };
 
-using non_weighted_adj_matrix_graph =  adj_matrix_graph<bool>;
+using adj_matrix_graph =  graph_matrix<bool>;
 
-using max_int_adj_matrix_graph = adj_matrix_graph<std::intmax_t>;
-using max_uint_adj_matrix_graph = adj_matrix_graph<std::uintmax_t>;
+using max_int_weighted_matrix_graph = graph_matrix<std::intmax_t>;
+using max_uint_weighted_matrix_graph = graph_matrix<std::uintmax_t>;
 
-using double_adj_matrix_graph = adj_matrix_graph<double>;
+using double_weighted_matrix_graph = graph_matrix<double>;

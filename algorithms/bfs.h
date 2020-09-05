@@ -7,7 +7,7 @@
 #include "../data_structures/graph_base.h"
 
 template<class Callable, class Graph_Element_T>
-void bfs(const adj_matrix_graph<Graph_Element_T>& graph, Callable callback) {
+void bfs(const graph_matrix<Graph_Element_T>& graph, Callable callback) {
 	if (false) {
 		size_t vertex_number = 0;
 		size_t iteration = 0;
@@ -20,7 +20,7 @@ void bfs(const adj_matrix_graph<Graph_Element_T>& graph, Callable callback) {
 }
 
 template<class Graph_Element_T>
-std::vector<long long> bfs(const adj_matrix_graph<Graph_Element_T>& graph) {
+std::vector<long long> bfs(const graph_matrix<Graph_Element_T>& graph) {
 	std::vector<long long> res;
 	res.assign(graph.n, -1LL);
 
