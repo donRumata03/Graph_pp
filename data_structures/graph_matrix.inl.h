@@ -191,7 +191,72 @@ void graph_matrix<T>::set_bidirectional_edge (size_t from, size_t to, const T &v
 	data[to][from] = value;
 }
 
+
+/**
+ * Applies the functor to all the vertexes to which it`s possible to come from the given vertex THROUGH one edge
+ * @param functor: the functor to apply
+ * @param vertex_index: the initial vertex index
+ */
+template <class T>
+template <class Functor>
+void graph_matrix<T>::for_vertex_children (size_t vertex_index, const Functor &functor)
+{
+	for (size_t target_index = 0; target_index < n; ++target_index) {
+		if (data[vertex_index][target_index]) {
+			functor(target_index);
+		}
+	}
+}
+
+
+template <class T>
+std::vector<size_t> graph_matrix<T>::get_vertex_children (size_t starting_vertex_index)
+{
+	std::vector<size_t> res;
+	res.reserve(n);
+
+	// for_vertex_children(starting_vertex_index, [&](size_t index){ res.push_back(index); });
+	for (size_t target_index = 0; target_index < n; ++target_index) {
+		if (data[starting_vertex_index][target_index]) {
+			res.push_back(target_index);
+		}
+	}
+
+	return res;
+}
+
+
+
+template <class T>
+template <class Functor>
+void graph_matrix<T>::for_vertex_parents (size_t vertex_index, const Functor &functor)
+{
+	for (size_t target_index = 0; target_index < n; ++target_index) {
+		if (data[target_index][vertex_index]) {
+			functor(target_index);
+		}
+	}
+}
+
+template <class T>
+std::vector<size_t> graph_matrix<T>::get_vertex_parents (size_t starting_vertex_index)
+{
+	std::vector<size_t> res;
+	res.reserve(n);
+
+	// for_vertex_parents(starting_vertex_index, [&](size_t index){ res.push_back(index); });
+	for (size_t target_index = 0; target_index < n; ++target_index) {
+		if (data[target_index][starting_vertex_index]) {
+			res.push_back(target_index);
+		}
+	}
+
+	return res;
+}
+
+
 /// ********************************************* Graph outputting: *********************************************
+
 
 template<class Type>
 std::ostream& operator<< (std::ostream &os, const graph_matrix<Type> &graph)
@@ -252,8 +317,8 @@ std::ostream& operator<< (std::ostream &os, const graph_matrix<Type> &graph)
 	return os;
 }
 
-
 /// ********************************************* Graph inputting from parsed data: *********************************************
+
 
 template < class T >
 template < class input_directionality_type, class Vertex_indexing_type >
@@ -281,7 +346,6 @@ graph_matrix<T>::add_edges_from_list (const std::vector<std::pair<Vertex_indexin
 	}
 }
 
-
 template <class T>
 template <class input_directionality_type, class Vertex_indexing_type>
 void graph_matrix<T>::update_from_edge_list (const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
@@ -290,5 +354,6 @@ void graph_matrix<T>::update_from_edge_list (const std::vector<std::pair<Vertex_
 	fill_default();
 	add_edges_from_list<input_directionality_type>(edges);
 }
+
 
 

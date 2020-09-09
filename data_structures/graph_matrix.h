@@ -67,7 +67,15 @@ public:
 
 	void set_bidirectional_edge(size_t from, size_t to, const T& value);
 
-	/// TODO: add functions to list all the vertices from which there is a edge
+	template<class Functor>
+	void for_vertex_children (size_t vertex_index, const Functor &functor);
+
+	std::vector<size_t> get_vertex_children (size_t starting_vertex_index);
+
+	template<class Functor>
+	void for_vertex_parents (size_t vertex_index, const Functor &functor);
+
+	std::vector<size_t> get_vertex_parents (size_t starting_vertex_index);
 
 	/// 														Operator []:
 	template<class Type>
@@ -82,9 +90,16 @@ public:
 		};
 	};
 
+#if defined(NDEBUG)
+	T* operator[] (size_t index) {
+		return data[index];
+	}
+#else
 	col_t<T> operator[] (size_t index) {
+		assert(index < n);
 		return col_t<T> { data[index], n };
 	}
+#endif
 
 	/// 														Graph outputting:
 	template<class Type> friend std::ostream &operator<< (std::ostream &os, const graph_matrix<Type> &graph);
