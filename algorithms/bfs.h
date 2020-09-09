@@ -12,12 +12,12 @@
 template<class Callable, class Graph_Element_T>
 void bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index, Callable callback) {
 	if (false) {
-		size_t vertex_number = 0;
+		size_t vertex_index = 0;
 		size_t iteration = 0;
 		Graph_Element_T path_length = Graph_Element_T{};
 
 		// Causes compiler error if your function has false format:
-		callback(vertex, iteration, path_length);
+		callback(vertex_index, iteration, path_length);
 	}
 
 	assert(initial_vertex_index < graph.n);
@@ -29,11 +29,11 @@ template<class Callable>
 void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, Callable callback)
 {
 	if (false) {
-		size_t vertex_number = 0;
+		size_t vertex_index = 0;
 		size_t iteration = 0;
 
 		// Causes compiler error if your function has false format:
-		callback(vertex, iteration);
+		callback(vertex_index, iteration);
 	}
 	assert(initial_vertex_index != 0);
 	assert(initial_vertex_index < graph.n);
@@ -55,7 +55,7 @@ void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, Callable 
 	std::vector<bool> viewed_vertexes(n, false);
 	// add_last(initial_vertex_index);
 
-	while (last_size) {
+	while (true) {
 
 	}
 }

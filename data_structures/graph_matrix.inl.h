@@ -448,7 +448,7 @@ void graph_matrix<T>::input_from_matrix (const std::string &source_string)
 
 template <class T,
         class InputStream,
-		typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>*
+		typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>* = nullptr
 >
 InputStream &operator>> (InputStream &is, graph_matrix<T> &graph)
 {

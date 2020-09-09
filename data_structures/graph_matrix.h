@@ -158,7 +158,7 @@ public:
 
 	template<
 			class InputStream,
-			typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>* = nullptr
+			typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>*
 	>
 	friend InputStream& operator >> (InputStream& is, graph_matrix<T>& graph);
 
