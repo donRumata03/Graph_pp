@@ -105,7 +105,7 @@ public:
 
 	template<class Type,
 			class OutputStream,
-			typename std::enable_if_t<std::is_same_v<OutputStream, std::ostream> || std::is_same_v<OutputStream, std::stringstream>, int>* = nullptr
+			typename std::enable_if_t<std::is_same_v<OutputStream, std::ostream> || std::is_same_v<OutputStream, std::stringstream>, int>*
 	>
 	friend OutputStream &operator<< (OutputStream &os, const graph_matrix<Type> &graph);
 	// friend std::ostream& operator << (std::ostream& os, const adj_matrix_graph& graph);
@@ -118,7 +118,7 @@ public:
 	// struct input_one_directional {};
 
 	/// The way edges will be added:
-	enum class edge_adding_types {
+	enum class edge_adding_modes {
 		bidirectional,  // given edges are passable in both directions
 		directed        // given edges are passable only in the given direction
 	};
@@ -126,21 +126,21 @@ public:
 	/// For BOOL matrices:
 
 	template<class Vertex_indexing_type>
-	void add_edges_from_list (edge_adding_types directionality,
+	void add_edges_from_list (edge_adding_modes directionality,
 	                          const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges);
 
 	template</*class input_directionality_type, */class Vertex_indexing_type>
-	void update_from_edge_list (edge_adding_types directionality,
+	void update_from_edge_list (edge_adding_modes directionality,
 	                            const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges);
 
 	/// For ALL matrices <b>except bool</b>:
 
 	template<class Vertex_indexing_type>
-	void add_edges_from_list (edge_adding_types directionality,
+	void add_edges_from_list (edge_adding_modes directionality,
 	                          const std::vector<std::tuple<Vertex_indexing_type, Vertex_indexing_type, T>> &edges);
 
 	template</*class input_directionality_type, */class Vertex_indexing_type>
-	void update_from_edge_list (edge_adding_types directionality,
+	void update_from_edge_list (edge_adding_modes directionality,
 	                            const std::vector<std::tuple<Vertex_indexing_type, Vertex_indexing_type, T>> &edges);
 
 
@@ -167,15 +167,15 @@ public:
 	        class InputStream,
 			typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>* = nullptr
 			>
-	void add_edges_from_list(edge_adding_types directionality, size_t edge_list_size, InputStream& input_stream);
-	void add_edges_from_list(edge_adding_types directionality, size_t edge_list_size, const std::string& char_source);
+	void add_edges_from_list(edge_adding_modes directionality, size_t edge_list_size, InputStream& input_stream);
+	void add_edges_from_list(edge_adding_modes directionality, size_t edge_list_size, const std::string& char_source);
 
 	template<
 			class InputStream,
 			typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>* = nullptr
 	>
-	void update_from_edge_list(edge_adding_types directionality, size_t edge_list_size, InputStream& input_stream);
-	void update_from_edge_list(edge_adding_types directionality, size_t edge_list_size, const std::string& char_source);
+	void update_from_edge_list(edge_adding_modes directionality, size_t edge_list_size, InputStream& input_stream);
+	void update_from_edge_list(edge_adding_modes directionality, size_t edge_list_size, const std::string& char_source);
 };
 
 

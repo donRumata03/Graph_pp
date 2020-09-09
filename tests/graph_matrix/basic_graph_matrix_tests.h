@@ -67,11 +67,11 @@ inline void bool_graph_edge_adding_test() {
 			{2, 0},
 	};
 
-	graph.add_edges_from_list(adj_matrix_graph::edge_adding_types::directed, edges_to_add);
+	graph.add_edges_from_list(adj_matrix_graph::edge_adding_modes::directed, edges_to_add);
 
 	std::cout << graph << std::endl;
 
-	graph.add_edges_from_list(adj_matrix_graph::edge_adding_types::bidirectional, edges_to_add);
+	graph.add_edges_from_list(adj_matrix_graph::edge_adding_modes::bidirectional, edges_to_add);
 
 	std::cout << graph << std::endl;
 }
@@ -84,11 +84,11 @@ inline void weighted_graph_edge_adding_test() {
 			{2, 0, -12},
 	};
 
-	graph.add_edges_from_list(max_int_weighted_matrix_graph::edge_adding_types::directed, edges_to_add);
+	graph.add_edges_from_list(max_int_weighted_matrix_graph::edge_adding_modes::directed, edges_to_add);
 
 	std::cout << graph << std::endl;
 
-	graph.add_edges_from_list(max_int_weighted_matrix_graph::edge_adding_types::bidirectional, edges_to_add);
+	graph.add_edges_from_list(max_int_weighted_matrix_graph::edge_adding_modes::bidirectional, edges_to_add);
 
 	std::cout << graph << std::endl;
 }
@@ -109,8 +109,17 @@ inline void matrix_graph_input_test() {
 }
 
 
-inline void t() {
-	// TODO
+inline void test_graph_input_from_edge_list() {
+	size_t n;
+	std::cin >> n;
+	adj_matrix_graph graph (n);
+
+	std::size_t edges;
+	std::cin >> edges;
+
+	graph.update_from_edge_list(adj_matrix_graph::edge_adding_modes::directed, edges, std::cin);
+
+	std::cout << graph << std::endl;
 }
 
 

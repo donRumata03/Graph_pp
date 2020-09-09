@@ -17,7 +17,8 @@ int main ()
 	// bool_graph_edge_adding_test();
 	// weighted_graph_edge_adding_test();
 
-	matrix_graph_input_test();
+	// matrix_graph_input_test();
+	test_graph_input_from_edge_list();
 
 	/// Matrix graph memory management tests:
 
