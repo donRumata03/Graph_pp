@@ -12,10 +12,12 @@ int main ()
 	// graph_operator_test();
 
 	// graph_output_test();
-	// graph_input_test();
+	// matrix_graph_input_test();
 
 	// bool_graph_edge_adding_test();
-	weighted_graph_edge_adding_test();
+	// weighted_graph_edge_adding_test();
+
+	matrix_graph_input_test();
 
 	/// Matrix graph memory management tests:
 

@@ -58,18 +58,6 @@ inline void graph_operator_test () {
 	std::cout << graph[2][0] << " " << graph[2][1] << " " << graph[2][2] << std::endl;
 }
 
-inline void graph_input_test() {
-	max_int_weighted_matrix_graph graph(3);
-
-	// std::cin >> graph;
-
-	graph.input_from_matrix(std::cin);
-	std::cout << graph << std::endl;
-
-	std::cout << "First colon: " << graph[0][0] << " " << graph[0][1] << " " << graph[0][2] << std::endl;
-	std::cout << "First row: " << graph[0][0] << " " << graph[1][0] << " " << graph[2][0] << std::endl;
-
-}
 
 inline void bool_graph_edge_adding_test() {
 	adj_matrix_graph graph(3);
@@ -104,4 +92,25 @@ inline void weighted_graph_edge_adding_test() {
 
 	std::cout << graph << std::endl;
 }
+
+//////////////////////////////////// 	Graph input from streams and strings:  ////////////////////////////////////
+
+inline void matrix_graph_input_test() {
+	max_int_weighted_matrix_graph graph(3);
+
+	// std::cin >> graph;
+
+	graph.input_from_matrix(std::cin);
+	std::cout << graph << std::endl;
+
+	std::cout << "First colon: " << graph[0][0] << " " << graph[0][1] << " " << graph[0][2] << std::endl;
+	std::cout << "First row: " << graph[0][0] << " " << graph[1][0] << " " << graph[2][0] << std::endl;
+
+}
+
+
+inline void t() {
+	// TODO
+}
+
 

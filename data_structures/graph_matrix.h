@@ -102,7 +102,12 @@ public:
 #endif
 
 	/// 														Graph outputting:
-	template<class Type> friend std::ostream &operator<< (std::ostream &os, const graph_matrix<Type> &graph);
+
+	template<class Type,
+			class OutputStream,
+			typename std::enable_if_t<std::is_same_v<OutputStream, std::ostream> || std::is_same_v<OutputStream, std::stringstream>, int>* = nullptr
+	>
+	friend OutputStream &operator<< (OutputStream &os, const graph_matrix<Type> &graph);
 	// friend std::ostream& operator << (std::ostream& os, const adj_matrix_graph& graph);
 
 
@@ -143,42 +148,34 @@ public:
 	/// 												Graph inputting from character sequence:
 
 	// From matrices:
-	template<class Stream_type> // <- is usually std::istream or std::stringstream
-	void input_from_matrix(Stream_type& is) {
-		for (size_t i = 0; i < n; ++i) {
-			for (size_t j = 0; j < n; ++j) {
-				is >> data[j][i];
-			}
-		}
-	}
-	void input_from_matrix(const std::string& source_string) {
-		std::stringstream stream;
-		stream << source_string;
+	template<
+			class InputStream,
+			typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>* = nullptr
+	>
+	void input_from_matrix(InputStream& is);
 
-		input_from_matrix(stream);
-	}
+	void input_from_matrix(const std::string& source_string);
 
-	friend std::istream& operator >> (std::istream& is, graph_matrix<T>& graph) {
-//		T temp;
-//		for (size_t i = 0; i < n; ++i) {
-//			for (size_t j = 0; j < n; ++j) {
-//				cin >> temp;
-//				data[i][j] = temp;
-//			}
-//		}
-		graph.input_from_matrix(is);
-		return is;
-	}
+	template<
+			class InputStream,
+			typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>* = nullptr
+	>
+	friend InputStream& operator >> (InputStream& is, graph_matrix<T>& graph);
 
 	// From edge list:
-	template<class input_directionality_type>
-	void update_from_edge_list(size_t edge_list_size, std::istream& input_stream) {
-		T temp_vertex_from, temp_vertex_to;
-		for (size_t edge_index = 0; edge_index < edge_index; ++edge_index) {
-			input_stream >>
-		}
-	}
+	template<
+	        class InputStream,
+			typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>* = nullptr
+			>
+	void add_edges_from_list(edge_adding_types directionality, size_t edge_list_size, InputStream& input_stream);
+	void add_edges_from_list(edge_adding_types directionality, size_t edge_list_size, const std::string& char_source);
 
+	template<
+			class InputStream,
+			typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>* = nullptr
+	>
+	void update_from_edge_list(edge_adding_types directionality, size_t edge_list_size, InputStream& input_stream);
+	void update_from_edge_list(edge_adding_types directionality, size_t edge_list_size, const std::string& char_source);
 };
 
 

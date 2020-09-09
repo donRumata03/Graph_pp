@@ -269,9 +269,11 @@ std::vector<size_t> graph_matrix<T>::get_vertex_parents (size_t starting_vertex_
 
 /// ********************************************* Graph outputting: *********************************************
 
-
-template<class Type>
-std::ostream& operator<< (std::ostream &os, const graph_matrix<Type> &graph)
+template<class Type,
+		class OutputStream,
+		typename std::enable_if_t<std::is_same_v<OutputStream, std::ostream> || std::is_same_v<OutputStream, std::stringstream>, int>* = nullptr
+>
+OutputStream& operator<< (OutputStream &os, const graph_matrix<Type> &graph)
 {
 	constexpr const char* separator = "__________________________________";
 	os << separator << std::endl;
@@ -335,7 +337,6 @@ std::ostream& operator<< (std::ostream &os, const graph_matrix<Type> &graph)
 
 /// ********************************************* Graph inputting from parsed data: *********************************************
 
-
 template < class T >
 template <class Vertex_indexing_type >
 void
@@ -379,6 +380,7 @@ void graph_matrix<T>::update_from_edge_list (edge_adding_types directionality, c
 }
 
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <class T>
@@ -415,6 +417,111 @@ void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_types dir
 
 	fill_default();
 	add_edges_from_list(directionality, edges);
+}
+
+
+/// ********************************************* Graph inputting from streams: *********************************************
+
+template <class T>
+template<
+		class InputStream,
+		typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>*
+>
+void graph_matrix<T>::input_from_matrix (InputStream &is)
+{
+	for (size_t i = 0; i < n; ++i) {
+		for (size_t j = 0; j < n; ++j) {
+			is >> data[j][i];
+		}
+	}
+}
+
+template <class T>
+void graph_matrix<T>::input_from_matrix (const std::string &source_string)
+{
+	std::stringstream stream;
+	stream << source_string;
+
+	input_from_matrix(stream);
+}
+
+
+template <class T,
+        class InputStream,
+		typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>*
+>
+InputStream &operator>> (InputStream &is, graph_matrix<T> &graph)
+{
+//		T temp;
+//		for (size_t i = 0; i < n; ++i) {
+//			for (size_t j = 0; j < n; ++j) {
+//				cin >> temp;
+//				data[i][j] = temp;
+//			}
+//		}
+	graph.input_from_matrix(is);
+	return is;
+}
+
+template <class T>
+template <
+		class InputStream,
+		typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>*
+>
+void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_types directionality, size_t edge_list_size,
+                                           InputStream &input_stream)
+{
+	if constexpr (std::is_same_v<T, bool>) {
+		std::vector<std::pair<size_t, size_t>> edges(edge_list_size);
+
+		for (auto &p : edges) {
+			input_stream << p.first << p.second;
+		}
+
+		add_edges_from_list(edges);
+	}
+	else {
+		std::vector<std::tuple<size_t, size_t, T>> edges(edge_list_size);
+
+		for (auto &p : edges) {
+			input_stream << std::get<0>(p) << std::get<1>(p) << std::get<2>(p);
+		}
+
+		add_edges_from_list(edges);
+	}
+}
+
+template <class T>
+void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_types directionality, size_t edge_list_size,
+                                           const std::string &char_source)
+{
+	std::stringstream stream;
+	stream << char_source;
+
+	return add_edges_from_list(directionality, edge_list_size, stream);
+}
+
+template <class T>
+template <
+        class InputStream,
+		typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>*
+>
+void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_types directionality, size_t edge_list_size,
+                                             InputStream &input_stream)
+{
+	/// Reset all edges and add the ones from the list:
+	fill_default();
+	add_edges_from_list(directionality, edge_list_size, input_stream);
+}
+
+template <class T>
+void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_types directionality, size_t edge_list_size,
+                                             const std::string &char_source)
+{
+	std::stringstream stream;
+	stream << char_source;
+
+	return update_from_edge_list(directionality, edge_list_size, stream);
 }
 
 
