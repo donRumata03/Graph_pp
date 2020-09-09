@@ -39,6 +39,7 @@ void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, Callable 
 	assert(initial_vertex_index < graph.n);
 	auto n = graph.n;
 
+	/*
 	std::unique_ptr<size_t> this_wave(new size_t [n]), last_wave(new size_t [n]);
 	size_t this_size = 0, last_size = 0;
 
@@ -47,9 +48,12 @@ void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, Callable 
 
 	auto add_this = [&this_wave, &this_size](size_t vert_index){ return this_wave[this_size++] = vert_index; };
 	auto add_last = [&last_wave, &last_size](size_t vert_index){ return last_wave[last_size++] = vert_index; };
+	*/
+
+	std::vector<size_t> last_wave, this_wave;
 
 	std::vector<bool> viewed_vertexes(n, false);
-	add_last(initial_vertex_index);
+	// add_last(initial_vertex_index);
 
 	while (last_size) {
 
@@ -57,7 +61,7 @@ void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, Callable 
 }
 
 template<class Graph_Element_T>
-std::vector<long long> bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index,) {
+std::vector<long long> bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index) {
 	std::vector<long long> res;
 	res.assign(graph.n, -1LL);
 
