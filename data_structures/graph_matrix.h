@@ -51,13 +51,11 @@ public:
 	// Move assignment operator:
 	graph_matrix& operator = (graph_matrix&& other) noexcept;
 
-	/// 														 User API for memory management:
+	/// 														 User API of memory management:
 	void resize(size_t new_size);
 	void release();
 
-	void fill_default();
-
-
+	void fill_default(); // TODO: fill with std::numeric_limits<T>::max but not with 0!!!
 
 	/// 														 Edge access:
 
@@ -132,6 +130,8 @@ public:
 	template</*class input_directionality_type, */class Vertex_indexing_type>
 	void update_from_edge_list (edge_adding_modes directionality,
 	                            const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges);
+
+	void make_all_edges_bidirectional();
 
 	/// For ALL matrices <b>except bool</b>:
 

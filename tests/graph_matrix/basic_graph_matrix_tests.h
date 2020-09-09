@@ -119,6 +119,8 @@ inline void test_graph_input_from_edge_list() {
 
 	graph.update_from_edge_list(adj_matrix_graph::edge_adding_modes::directed, edges, std::cin);
 
+	graph.make_all_edges_bidirectional();
+
 	std::cout << graph << std::endl;
 }
 

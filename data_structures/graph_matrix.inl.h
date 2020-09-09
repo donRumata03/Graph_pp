@@ -524,5 +524,19 @@ void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_modes dir
 	return update_from_edge_list(directionality, edge_list_size, stream);
 }
 
+template <class T>
+void graph_matrix<T>::make_all_edges_bidirectional ()
+{
+	static_assert(std::is_same_v<T, bool>, "the type should be bool");
+
+	for (size_t i = 0; i < n; ++i) {
+		for (size_t j = 0; j <= i; ++j) {
+			bool has_some_edge = data[i][j] || data[j][i];
+			data[i][j] = has_some_edge;
+			data[j][i] = has_some_edge;
+		}
+	}
+}
+
 
 
