@@ -1,5 +1,8 @@
 #include "tests/graph_matrix/basic_graph_matrix_tests.h"
 #include "tests/graph_matrix/memory_management_tests.h"
+
+#include "tests/random_tests.h"
+
 int main ()
 {
 	/// Basic matrix graph tests:

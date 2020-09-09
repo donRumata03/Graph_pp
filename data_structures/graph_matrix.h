@@ -6,7 +6,6 @@
 
 #include "graph_base.h"
 
-#include <iomanip>
 
 template <class T>
 struct graph_matrix {

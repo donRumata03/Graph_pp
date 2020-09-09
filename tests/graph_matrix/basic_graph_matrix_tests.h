@@ -83,6 +83,6 @@ inline void weighted_graph_edge_adding_test() {
 			{0., 0.}
 	};
 
-	graph.add_edges_from_list<graph_matrix<long long>::input_one_directional>();
+	graph.add_edges_from_list<graph_matrix<>::input_one_directional>();
 }
 
