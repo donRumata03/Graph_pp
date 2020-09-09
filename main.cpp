@@ -1,7 +1,9 @@
+#include "tests/random_tests.h"
+
 #include "tests/graph_matrix/basic_graph_matrix_tests.h"
 #include "tests/graph_matrix/memory_management_tests.h"
 
-#include "tests/random_tests.h"
+#include "tests/graph_searches/bfs_tests.h"
 
 int main ()
 {
@@ -12,6 +14,8 @@ int main ()
 	// graph_output_test();
 	// graph_input_test();
 
+	// bool_graph_edge_adding_test();
+	weighted_graph_edge_adding_test();
 
 	/// Matrix graph memory management tests:
 
@@ -20,6 +24,12 @@ int main ()
 
 	// test_matrix_graph_copy_constructor();
 	// test_matrix_graph_move_constructor();
+
+	// test_graph_self_assignments();
+
+
+	/// BFS:
+
 
 
 	return 0;

@@ -69,7 +69,7 @@ graph_matrix<T>::graph_matrix (size_t size) : n(size) {
 template < class T >
 graph_matrix<T>::~graph_matrix ()
 {
-	std::cout << "Deleting matrix..." << std::endl;
+	// std::cout << "Deleting matrix..." << std::endl;
 
 	dealloc();
 }
@@ -114,6 +114,12 @@ graph_matrix<T> &graph_matrix<T>::operator= (const graph_matrix &other)
 		}
 	}
 
+	/*
+	else {
+		std::cout << "self!" << std::endl;
+	}
+	*/
+
 	return *this;
 }
 
@@ -134,6 +140,12 @@ graph_matrix<T> &graph_matrix<T>::operator= (graph_matrix &&other) noexcept
 		other.data = nullptr;
 		other.n = 0;
 	}
+
+	/*
+	else {
+		std::cout << "self!" << std::endl;
+	}
+	*/
 
 	return *this;
 }
@@ -272,9 +284,12 @@ std::ostream& operator<< (std::ostream &os, const graph_matrix<Type> &graph)
 		for (size_t i = 0; i < graph.n; i++) {
 			bool is_broken = false;
 			for (size_t j = 0; j < graph.n; j++) {
-				if (graph.get_edge(i, j) > 99 || graph.get_edge(i, j) < -9) has_big_digits = true;
-				is_broken = true;
-				break;
+				// if (graph.get_edge(i, j) > 99 || graph.get_edge(i, j) < -9) {
+				if (graph.get_edge(i, j) > 9 || graph.get_edge(i, j) < 0) {
+					has_big_digits = true;
+					is_broken = true;
+					break;
+				}
 			}
 			if (is_broken) break;
 		}
@@ -282,6 +297,7 @@ std::ostream& operator<< (std::ostream &os, const graph_matrix<Type> &graph)
 
 	if constexpr (std::is_floating_point_v<Type>) {
 		os << std::setprecision(2);
+		has_big_digits = true;
 	}
 
 	// std::cout << has_big_digits << std::endl;
@@ -321,38 +337,84 @@ std::ostream& operator<< (std::ostream &os, const graph_matrix<Type> &graph)
 
 
 template < class T >
-template < class input_directionality_type, class Vertex_indexing_type >
+template <class Vertex_indexing_type >
 void
-graph_matrix<T>::add_edges_from_list (const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
+graph_matrix<T>::add_edges_from_list (edge_adding_types directionality,
+                                      const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
 {
+	/*
 	static_assert(
 			std::is_same_v<input_directionality_type, input_bidirectional> || std::is_same_v<input_directionality_type, input_one_directional>,
 			"input_directionality_type should be one of: input_bidirectional, input_one_directional"
 	);
+	*/
 
 	static_assert(std::is_integral_v<Vertex_indexing_type>, "Vertex indexing type should be an integral type");
 	static_assert(std::is_same_v<T, bool> , "T (graph template parameter) should bool to use this input mode");
 
-	// TODO: make filling function
-	// TODO: split into 2 functions: fill and adding edges from edge list
 	for (auto& p : edges) {
 		auto[i, j] = p;
 
-		data[i][j] =
+		data[i][j] = true;
 
+		/*
 		if constexpr (std::is_same_v<input_directionality_type, input_bidirectional>) {
-			data[j][i] = data[i][j];
+				data[j][i] = data[i][j];
+			}
+		*/
+
+		if (directionality == edge_adding_types::bidirectional) {
+			data[j][i] = true;
 		}
 	}
 }
 
 template <class T>
-template <class input_directionality_type, class Vertex_indexing_type>
-void graph_matrix<T>::update_from_edge_list (const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
+template </*class input_directionality_type, */class Vertex_indexing_type>
+void graph_matrix<T>::update_from_edge_list (edge_adding_types directionality, const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
 {
 	/// Reset all edges and add the ones from the list:
 	fill_default();
-	add_edges_from_list<input_directionality_type>(edges);
+	add_edges_from_list(directionality, edges);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+template <class Vertex_indexing_type>
+void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_types directionality,
+                                           const std::vector<std::tuple<Vertex_indexing_type, Vertex_indexing_type, T>> &edges)
+{
+	static_assert(std::is_integral_v<Vertex_indexing_type>, "Vertex indexing type should be an integral type");
+	static_assert(!std::is_same_v<T, bool> , "T (graph template parameter) shouldn`t be bool to use this edge adding mode");
+
+	for (auto& p : edges) {
+		auto[i, j, value] = p;
+
+		data[i][j] = value;
+
+		/*
+		if constexpr (std::is_same_v<input_directionality_type, input_bidirectional>) {
+				data[j][i] = data[i][j];
+			}
+		*/
+
+		if (directionality == edge_adding_types::bidirectional) {
+			data[j][i] = value;
+		}
+	}
+}
+
+template <class T>
+template <class Vertex_indexing_type>
+void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_types directionality,
+                                             const std::vector<std::tuple<Vertex_indexing_type, Vertex_indexing_type, T>> &edges)
+{
+	/// Reset all edges and add the ones from the list:
+
+	fill_default();
+	add_edges_from_list(directionality, edges);
 }
 
 

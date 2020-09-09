@@ -107,16 +107,38 @@ public:
 
 
 	///														 Graph inputting from parsed data:
-	// Tagging types:
-	struct input_bidirectional {};
-	struct input_one_directional {};
+
+	// COULD BE Tagging types:
+	// struct input_bidirectional {};
+	// struct input_one_directional {};
+
+	/// The way edges will be added:
+	enum class edge_adding_types {
+		bidirectional,  // given edges are passable in both directions
+		directed        // given edges are passable only in the given direction
+	};
+
+	/// For BOOL matrices:
+
+	template<class Vertex_indexing_type>
+	void add_edges_from_list (edge_adding_types directionality,
+	                          const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges);
+
+	template</*class input_directionality_type, */class Vertex_indexing_type>
+	void update_from_edge_list (edge_adding_types directionality,
+	                            const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges);
+
+	/// For ALL matrices <b>except bool</b>:
+
+	template<class Vertex_indexing_type>
+	void add_edges_from_list (edge_adding_types directionality,
+	                          const std::vector<std::tuple<Vertex_indexing_type, Vertex_indexing_type, T>> &edges);
+
+	template</*class input_directionality_type, */class Vertex_indexing_type>
+	void update_from_edge_list (edge_adding_types directionality,
+	                            const std::vector<std::tuple<Vertex_indexing_type, Vertex_indexing_type, T>> &edges);
 
 
-	template<class input_directionality_type, class Vertex_indexing_type>
-	void add_edges_from_list(const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>>& edges);
-
-	template<class input_directionality_type, class Vertex_indexing_type>
-	void update_from_edge_list(const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>>& edges);
 
 	/// 												Graph inputting from character sequence:
 

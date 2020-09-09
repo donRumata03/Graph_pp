@@ -74,15 +74,34 @@ inline void graph_input_test() {
 inline void bool_graph_edge_adding_test() {
 	adj_matrix_graph graph(3);
 
+	std::vector<std::pair<long long, long long>> edges_to_add = {
+			{1, 2},
+			{2, 0},
+	};
+
+	graph.add_edges_from_list(adj_matrix_graph::edge_adding_types::directed, edges_to_add);
+
+	std::cout << graph << std::endl;
+
+	graph.add_edges_from_list(adj_matrix_graph::edge_adding_types::bidirectional, edges_to_add);
+
+	std::cout << graph << std::endl;
 }
 
 inline void weighted_graph_edge_adding_test() {
 	max_int_weighted_matrix_graph graph(3);
 
-	std::vector<std::pair<long long, long long>> edges_to_add = {
-			{0., 0.}
+	std::vector<std::tuple<long long, long long, std::intmax_t>> edges_to_add = {
+			{1, 2, 34},
+			{2, 0, -12},
 	};
 
-	graph.add_edges_from_list<graph_matrix<>::input_one_directional>();
+	graph.add_edges_from_list(max_int_weighted_matrix_graph::edge_adding_types::directed, edges_to_add);
+
+	std::cout << graph << std::endl;
+
+	graph.add_edges_from_list(max_int_weighted_matrix_graph::edge_adding_types::bidirectional, edges_to_add);
+
+	std::cout << graph << std::endl;
 }
 

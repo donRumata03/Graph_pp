@@ -112,4 +112,16 @@ inline void test_matrix_graph_move_constructor() {
 	// ...
 }
 
-// TODO: test self assignment!
+inline void test_graph_self_assignments() {
+	adj_matrix_graph graph(100);
+
+	// Self copy assignment:
+	graph = graph;
+
+	std::cout << "Copy`s okay!" << std::endl;
+
+	// Self move assignment:
+	graph = std::move(graph);
+
+	std::cout << "Move and everything`s okay!" << std::endl;
+}
