@@ -107,7 +107,41 @@ void bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index
 	assert(initial_vertex_index < graph.n);
 	auto n = graph.n;
 
+	std::vector<size_t> last_wave, this_wave;
+	last_wave.reserve(n);
+	this_wave.reserve(n);
 
+	std::vector<distance_type> known_distances(n, infinity);
+
+	auto process_reviewed_vertex = [](size_t parent_vertex_index, size_t vertex_index){
+		known_distances[vertex_index] = known_distances[parent_vertex_index];
+		// TODO
+	};
+
+	last_wave.push_back(initial_vertex_index);
+	known_distances[initial_vertex_index] = 0;
+
+	callback(initial_vertex_index, 0, 0);
+
+	size_t iteration_number = 1;
+
+	while (!last_wave.empty()) {
+		for (size_t parent_vertex : last_wave) {
+			for (size_t new_vertex : graph.get_vertex_children(parent_vertex)) {
+				if (known_distances[new_vertex] == infinity) {
+					known_distances[new_vertex] = known_distances[parent_vertex] + graph.get_edge(parent_vertex, new_vertex);
+					this_wave.push_back(new_vertex);
+					callback(new_vertex);
+				}
+			}
+		}
+
+		// Move this wave contents to the new one and find data:
+		this_wave.swap(last_wave);
+		this_wave.clear();
+
+		++itreation_number;
+	}
 }
 
 
