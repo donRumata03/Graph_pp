@@ -113,8 +113,8 @@ void bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index
 
 	std::vector<distance_type> known_distances(n, infinity);
 
-	auto process_reviewed_vertex = [](size_t parent_vertex_index, size_t vertex_index){
-		known_distances[vertex_index] = known_distances[parent_vertex_index];
+	auto process_reviewed_vertex = [&](size_t parent_vertex_index, size_t vertex_index){
+		// known_distances[vertex_index] = known_distances[parent_vertex_index];
 		// TODO
 	};
 
@@ -131,7 +131,7 @@ void bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index
 				if (known_distances[new_vertex] == infinity) {
 					known_distances[new_vertex] = known_distances[parent_vertex] + graph.get_edge(parent_vertex, new_vertex);
 					this_wave.push_back(new_vertex);
-					callback(new_vertex);
+					callback(new_vertex, iteration_number, known_distances[new_vertex]);
 				}
 			}
 		}
@@ -140,7 +140,7 @@ void bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index
 		this_wave.swap(last_wave);
 		this_wave.clear();
 
-		++itreation_number;
+		++iteration_number;
 	}
 }
 

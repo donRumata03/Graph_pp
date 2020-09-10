@@ -5,14 +5,34 @@
 #pragma once
 
 #include <vector>
+#include <string>
 #include <iostream>
-#include <algorithm>
-#include <cassert>
-#include <execution>
 
+#include <algorithm>
 #include <ostream>
+
+#include <execution>
+#include <cassert>
 #include <iomanip>
 
+using namespace std::string_literals;
+
+/// Console encoding stuff:
+#ifdef WIN32
+#define IS_WINDOWS
+#include "windows.h"
+#undef max
+#undef min
+#endif
+
+inline void switch_console_to_utf8() {
+#ifdef IS_WINDOWS
+	SetConsoleOutputCP(CP_UTF8);
+	// system(("chcp "s + std::to_string(CP_UTF8)).c_str());
+#else // Assume, it`s Linux => the console already uses utf8 by default:
+	// NOP
+#endif
+}
 
 namespace detail
 {

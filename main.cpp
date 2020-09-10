@@ -7,12 +7,16 @@
 
 int main ()
 {
+	switch_console_to_utf8();
+
 	/// Random:
 	// test_maxing_types();
 
 
 	/// Basic matrix graph tests:
-	// graph_creation_test();
+	// graph_static_consts_test();
+
+	graph_creation_test();
 	// graph_operator_test();
 
 	// graph_output_test();
@@ -37,7 +41,7 @@ int main ()
 
 	/// BFS:
 
-	test_basic_bool_bfs();
+	// test_basic_bool_bfs();
 	// test_custom_graph_bfs();
 
 

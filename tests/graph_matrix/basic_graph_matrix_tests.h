@@ -7,13 +7,27 @@
 #include <data_structures/graphs.h>
 #include "data_structures/graph_base.h"
 
+inline void graph_static_consts_test() {
+	std::cout << sizeof(bool**) << std::endl;
+	std::cout << sizeof(graph_matrix<bool>) << " " << sizeof(graph_matrix<double>) << std::endl;
+	std::cout << graph_matrix<bool>::is_adj_matrix << " " << graph_matrix<long long>::is_adj_matrix << " " << graph_matrix<double>::is_adj_matrix << std::endl;
+	std::cout << graph_matrix<bool>::infinity << " " << graph_matrix<long long>::infinity << " " << graph_matrix<double>::infinity << std::endl;
+}
+
 inline void graph_creation_test() {
-	auto graph = adj_matrix_graph(5);
+	auto bool_graph = adj_matrix_graph(5);
 
-	graph.set_directed_edge(3, 2, true);
+	bool_graph.set_directed_edge(3, 2, true);
+	bool_graph.set_directed_edge(1, 3, true);
 
-	graph.set_directed_edge(1, 3, true);
+	std::cout << bool_graph << std::endl;
 
+	auto weighted_graph = max_int_weighted_matrix_graph(5);
+
+//	weighted_graph.set_directed_edge(3, 2, 10);
+//	weighted_graph.set_directed_edge(1, 3, true);
+
+	std::cout << weighted_graph << std::endl;
 }
 
 inline void graph_output_test() {

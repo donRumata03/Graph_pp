@@ -36,6 +36,14 @@ void graph_matrix<T>::alloc_and_fill (size_t size, const T &element)
 	fill_matrix(element);
 }
 
+
+template <class T>
+void graph_matrix<T>::alloc_and_fill (size_t size)
+{
+	alloc(size);
+	fill_default();
+}
+
 template < class T >
 void graph_matrix<T>::dealloc ()
 {
@@ -186,11 +194,41 @@ void graph_matrix<T>::release ()
 template < class T >
 void graph_matrix<T>::fill_default ()
 {
-	fill_matrix({});
+	T default_element;
+
+	if constexpr (is_adj_matrix) {
+		default_element = false;
+	}
+	else {
+		default_element = infinity;
+	}
+
+	fill_matrix(default_element);
+
+	for (size_t vertex_index = 0; vertex_index < n; ++vertex_index) {
+		if constexpr (is_adj_matrix) {
+			data[vertex_index][vertex_index] = true;
+		}
+		else {
+			data[vertex_index][vertex_index] = T(0);
+		}
+	}
 }
 
 /// ********************************************* Edge access for user: *********************************************
 
+
+template <class T>
+bool graph_matrix<T>::has_edge (size_t from, size_t to) const
+{
+	if constexpr (std::is_same_v<T, bool>) {
+		return get_edge(from, to);
+	}
+	else {
+		// Check if it`s 'inf' (but 'max' in our case):
+		return get_edge(from, to) != infinity;
+	}
+}
 
 template < class T >
 T &graph_matrix<T>::get_edge (size_t from, size_t to) const
@@ -294,7 +332,7 @@ OutputStream& operator<< (OutputStream &os, const graph_matrix<Type> &graph)
 {
 	constexpr const char* separator = "__________________________________";
 	os << separator << std::endl;
-	os << "Adjustment matrix graph representation <" << graph.n << ">:" << std::endl;
+	os << (graph_matrix<Type>::is_adj_matrix ? "Adjacency" : "Weighted") << " matrix graph representation <" << graph.n << ">:" << std::endl;
 
 	// Determine if it has big digits:
 	bool has_big_digits = false;
@@ -304,6 +342,7 @@ OutputStream& operator<< (OutputStream &os, const graph_matrix<Type> &graph)
 			bool is_broken = false;
 			for (size_t j = 0; j < graph.n; j++) {
 				// if (graph.get_edge(i, j) > 99 || graph.get_edge(i, j) < -9) {
+				if (graph.get_edge(i, j) == graph_matrix<Type>::infinity) continue;
 				if (graph.get_edge(i, j) > 9 || graph.get_edge(i, j) < 0) {
 					has_big_digits = true;
 					is_broken = true;
@@ -330,9 +369,9 @@ OutputStream& operator<< (OutputStream &os, const graph_matrix<Type> &graph)
 				if (j != graph.n - 1) os << " ";
 			}
 
-				// For non-bools:
+			// For non-bools:
 			else {
-				os << graph.get_edge(j, i);
+				os << (graph.get_edge(j, i) == graph_matrix<Type>::infinity ? "❌"s : std::to_string(graph.get_edge(j, i)));
 
 				// For little-size stuff: numbers from [-9, 99]
 				if (std::is_integral_v<Type> && !has_big_digits) {
@@ -554,6 +593,8 @@ void graph_matrix<T>::make_all_edges_bidirectional ()
 		}
 	}
 }
+
+
 
 
 

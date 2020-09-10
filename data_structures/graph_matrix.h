@@ -14,9 +14,13 @@ struct graph_matrix {
 			"this class only integral and floating point template parameters"
 			);
 
+
 	using value_type      = T;
 	using reference       = T&;
 	using const_reference = const T&;
+
+	static constexpr T infinity = std::numeric_limits<T>::max();
+	static constexpr bool is_adj_matrix = std::is_same_v<T, bool>;
 
 
 	/// 													Data:
@@ -27,7 +31,8 @@ struct graph_matrix {
 private:
 	void fill_matrix (const T& element = T{});
 	void alloc (size_t size);
-	void alloc_and_fill (size_t size, const T& element = T{});
+	void alloc_and_fill (size_t size, const T& element);
+	void alloc_and_fill (size_t size);
 	void dealloc ();
 
 public:
@@ -60,7 +65,7 @@ public:
 	void fill_default(); // TODO: fill with std::numeric_limits<T>::max but not with 0!!!
 
 	/// 														 Edge access:
-
+	[[nodiscard]] bool has_edge(size_t from, size_t to) const;
 	[[nodiscard]] T& get_edge(size_t from, size_t to) const;
 
 	void set_directed_edge(size_t from, size_t to, const T& value);
@@ -70,12 +75,12 @@ public:
 	template<class Functor>
 	void for_vertex_children (size_t vertex_index, const Functor &functor) const;
 
-	std::vector<size_t> get_vertex_children (size_t starting_vertex_index) const;
+	[[nodiscard]] std::vector<size_t> get_vertex_children (size_t starting_vertex_index) const;
 
 	template<class Functor>
 	void for_vertex_parents (size_t vertex_index, const Functor &functor) const;
 
-	std::vector<size_t> get_vertex_parents (size_t starting_vertex_index) const;
+	[[nodiscard]] std::vector<size_t> get_vertex_parents (size_t starting_vertex_index) const;
 
 	/// 														Operator []:
 	template<class Type>
@@ -180,6 +185,7 @@ public:
 	>
 	void update_from_edge_list(edge_adding_modes directionality, size_t edge_list_size, InputStream& input_stream);
 	void update_from_edge_list(edge_adding_modes directionality, size_t edge_list_size, const std::string& char_source);
+
 };
 
 
