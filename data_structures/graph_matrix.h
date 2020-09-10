@@ -52,6 +52,8 @@ public:
 	graph_matrix& operator = (graph_matrix&& other) noexcept;
 
 	/// 														 User API of memory management:
+	bool empty();
+
 	void resize(size_t new_size);
 	void release();
 

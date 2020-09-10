@@ -153,6 +153,23 @@ graph_matrix<T> &graph_matrix<T>::operator= (graph_matrix &&other) noexcept
 
 /// ********************************************* Memory management API for user: *********************************************
 
+
+template <class T>
+bool graph_matrix<T>::empty ()
+{
+#ifdef NDEBUG
+	// Release
+
+#else
+	// Debug
+	if (n == 0) assert(!data && "data should be nullptr if size is 0");
+	else assert(data && "data shouldn`t be nullptr if size is NOT 0");
+#endif
+
+	return n == 0;
+}
+
+
 template < class T >
 void graph_matrix<T>::resize (size_t new_size)
 {
