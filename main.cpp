@@ -16,7 +16,7 @@ int main ()
 	/// Basic matrix graph tests:
 	// graph_static_consts_test();
 
-	graph_creation_test();
+	// graph_creation_test();
 	// graph_operator_test();
 
 	// graph_output_test();
@@ -27,6 +27,8 @@ int main ()
 
 	// matrix_graph_input_test();
 	// test_graph_input_from_edge_list();
+
+	test_graph_numeration_modes();
 
 	/// Matrix graph memory management tests:
 

@@ -396,7 +396,7 @@ OutputStream& operator<< (OutputStream &os, const graph_matrix<Type> &graph)
 template < class T >
 template <class Vertex_indexing_type >
 void
-graph_matrix<T>::add_edges_from_list (edge_adding_modes directionality,
+graph_matrix<T>::add_edges_from_list (edge_adding_modes directionality, input_numeration_modes numeration_mode,
                                       const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
 {
 	/*
@@ -411,6 +411,11 @@ graph_matrix<T>::add_edges_from_list (edge_adding_modes directionality,
 
 	for (auto& p : edges) {
 		auto[i, j] = p;
+
+		 if (numeration_mode == input_numeration_modes::from_1) {
+		 	i--;
+		 	j--;
+		 }
 
 		data[i][j] = true;
 
@@ -428,11 +433,12 @@ graph_matrix<T>::add_edges_from_list (edge_adding_modes directionality,
 
 template <class T>
 template </*class input_directionality_type, */class Vertex_indexing_type>
-void graph_matrix<T>::update_from_edge_list (edge_adding_modes directionality, const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
+void graph_matrix<T>::update_from_edge_list (edge_adding_modes directionality, input_numeration_modes numeration_mode,
+		const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
 {
 	/// Reset all edges and add the ones from the list:
 	fill_default();
-	add_edges_from_list(directionality, edges);
+	add_edges_from_list(directionality, numeration_mode, edges);
 }
 
 
@@ -441,7 +447,7 @@ void graph_matrix<T>::update_from_edge_list (edge_adding_modes directionality, c
 
 template <class T>
 template <class Vertex_indexing_type>
-void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_modes directionality,
+void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_modes directionality, input_numeration_modes numeration_mode,
                                            const std::vector<std::tuple<Vertex_indexing_type, Vertex_indexing_type, T>> &edges)
 {
 	static_assert(std::is_integral_v<Vertex_indexing_type>, "Vertex indexing type should be an integral type");
@@ -449,6 +455,11 @@ void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_modes direc
 
 	for (auto& p : edges) {
 		auto[i, j, value] = p;
+
+		if (numeration_mode == input_numeration_modes::from_1) {
+			i--;
+			j--;
+		}
 
 		data[i][j] = value;
 
@@ -466,13 +477,13 @@ void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_modes direc
 
 template <class T>
 template <class Vertex_indexing_type>
-void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_modes directionality,
+void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_modes directionality, input_numeration_modes numeration_mode,
                                              const std::vector<std::tuple<Vertex_indexing_type, Vertex_indexing_type, T>> &edges)
 {
 	/// Reset all edges and add the ones from the list:
 
 	fill_default();
-	add_edges_from_list(directionality, edges);
+	add_edges_from_list(directionality, numeration_mode, edges);
 }
 
 
@@ -524,7 +535,7 @@ template <
 		class InputStream,
 		typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>*
 >
-void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_modes directionality, size_t edge_list_size,
+void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_modes directionality, input_numeration_modes numeration_mode, size_t edge_list_size,
                                            InputStream &input_stream)
 {
 	if constexpr (std::is_same_v<T, bool>) {
@@ -534,7 +545,7 @@ void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_modes direc
 			input_stream >> p.first >> p.second;
 		}
 
-		add_edges_from_list(directionality, edges);
+		add_edges_from_list(directionality, numeration_mode, edges);
 	}
 	else {
 		std::vector<std::tuple<size_t, size_t, T>> edges(edge_list_size);
@@ -543,18 +554,18 @@ void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_modes direc
 			input_stream >> std::get<0>(p) >> std::get<1>(p) >> std::get<2>(p);
 		}
 
-		add_edges_from_list(directionality, edges);
+		add_edges_from_list(directionality, numeration_mode, edges);
 	}
 }
 
 template <class T>
-void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_modes directionality, size_t edge_list_size,
+void graph_matrix<T>::add_edges_from_list (graph_matrix::edge_adding_modes directionality, input_numeration_modes numeration_mode, size_t edge_list_size,
                                            const std::string &char_source)
 {
 	std::stringstream stream;
 	stream << char_source;
 
-	return add_edges_from_list(directionality, edge_list_size, stream);
+	return add_edges_from_list(directionality, numeration_mode, edge_list_size, stream);
 }
 
 template <class T>
@@ -562,22 +573,22 @@ template <
         class InputStream,
 		typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>*
 >
-void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_modes directionality, size_t edge_list_size,
+void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_modes directionality, input_numeration_modes numeration_mode, size_t edge_list_size,
                                              InputStream &input_stream)
 {
 	/// Reset all edges and add the ones from the list:
 	fill_default();
-	add_edges_from_list(directionality, edge_list_size, input_stream);
+	add_edges_from_list(directionality, numeration_mode, edge_list_size, input_stream);
 }
 
 template <class T>
-void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_modes directionality, size_t edge_list_size,
+void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_modes directionality, input_numeration_modes numeration_mode, size_t edge_list_size,
                                              const std::string &char_source)
 {
 	std::stringstream stream;
 	stream << char_source;
 
-	return update_from_edge_list(directionality, edge_list_size, stream);
+	return update_from_edge_list(directionality, numeration_mode, edge_list_size, stream);
 }
 
 /// ********************************************* Common operations with graph matrices: *********************************************

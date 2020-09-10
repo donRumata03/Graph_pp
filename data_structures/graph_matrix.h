@@ -128,27 +128,32 @@ public:
 		directed        // given edges are passable only in the given direction
 	};
 
-	// TODO: add two types for input numeration: from 0 and from 1!!!!!!
+	enum class input_numeration_modes {
+		from_0, // Computers and programmers via computers usually number from 0 ;)
+		from_1  // Users and task checkers usually number from 1
+	};
+
+	// TODO: move the enumclasses outside the class scope!
 
 	/// For BOOL matrices:
 
 	template<class Vertex_indexing_type>
-	void add_edges_from_list (edge_adding_modes directionality,
+	void add_edges_from_list (edge_adding_modes directionality, input_numeration_modes numeration_mode,
 	                          const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges);
 
 	template</*class input_directionality_type, */class Vertex_indexing_type>
-	void update_from_edge_list (edge_adding_modes directionality,
+	void update_from_edge_list (edge_adding_modes directionality, input_numeration_modes numeration_mode,
 	                            const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges);
 
 
 	/// For ALL matrices <b>except bool</b>:
 
 	template<class Vertex_indexing_type>
-	void add_edges_from_list (edge_adding_modes directionality,
+	void add_edges_from_list (edge_adding_modes directionality, input_numeration_modes numeration_mode,
 	                          const std::vector<std::tuple<Vertex_indexing_type, Vertex_indexing_type, T>> &edges);
 
 	template</*class input_directionality_type, */class Vertex_indexing_type>
-	void update_from_edge_list (edge_adding_modes directionality,
+	void update_from_edge_list (edge_adding_modes directionality, input_numeration_modes numeration_mode,
 	                            const std::vector<std::tuple<Vertex_indexing_type, Vertex_indexing_type, T>> &edges);
 
 
@@ -175,15 +180,15 @@ public:
 	        class InputStream,
 			typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>* = nullptr
 			>
-	void add_edges_from_list(edge_adding_modes directionality, size_t edge_list_size, InputStream& input_stream);
-	void add_edges_from_list(edge_adding_modes directionality, size_t edge_list_size, const std::string& char_source);
+	void add_edges_from_list(edge_adding_modes directionality, input_numeration_modes numeration_mode, size_t edge_list_size, InputStream& input_stream);
+	void add_edges_from_list(edge_adding_modes directionality, input_numeration_modes numeration_mode, size_t edge_list_size, const std::string& char_source);
 
 	template<
 			class InputStream,
 			typename std::enable_if_t<std::is_same_v<InputStream, std::istream> || std::is_same_v<InputStream, std::stringstream>, int>* = nullptr
 	>
-	void update_from_edge_list(edge_adding_modes directionality, size_t edge_list_size, InputStream& input_stream);
-	void update_from_edge_list(edge_adding_modes directionality, size_t edge_list_size, const std::string& char_source);
+	void update_from_edge_list(edge_adding_modes directionality, input_numeration_modes numeration_mode, size_t edge_list_size, InputStream& input_stream);
+	void update_from_edge_list(edge_adding_modes directionality, input_numeration_modes numeration_mode, size_t edge_list_size, const std::string& char_source);
 
 	/// 															Common operations with graph matrices:
 	void make_all_edges_bidirectional();

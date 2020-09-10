@@ -81,11 +81,11 @@ inline void bool_graph_edge_adding_test() {
 			{2, 0},
 	};
 
-	graph.add_edges_from_list(adj_matrix_graph::edge_adding_modes::directed, edges_to_add);
+	graph.add_edges_from_list(adj_matrix_graph::edge_adding_modes::directed, adj_matrix_graph::input_numeration_modes::from_0, edges_to_add);
 
 	std::cout << graph << std::endl;
 
-	graph.add_edges_from_list(adj_matrix_graph::edge_adding_modes::bidirectional, edges_to_add);
+	graph.add_edges_from_list(adj_matrix_graph::edge_adding_modes::bidirectional, adj_matrix_graph::input_numeration_modes::from_0, edges_to_add);
 
 	std::cout << graph << std::endl;
 }
@@ -98,11 +98,11 @@ inline void weighted_graph_edge_adding_test() {
 			{2, 0, -12},
 	};
 
-	graph.add_edges_from_list(max_int_weighted_matrix_graph::edge_adding_modes::directed, edges_to_add);
+	graph.add_edges_from_list(max_int_weighted_matrix_graph::edge_adding_modes::directed, max_int_weighted_matrix_graph::input_numeration_modes::from_0,  edges_to_add);
 
 	std::cout << graph << std::endl;
 
-	graph.add_edges_from_list(max_int_weighted_matrix_graph::edge_adding_modes::bidirectional, edges_to_add);
+	graph.add_edges_from_list(max_int_weighted_matrix_graph::edge_adding_modes::bidirectional, max_int_weighted_matrix_graph::input_numeration_modes::from_0, edges_to_add);
 
 	std::cout << graph << std::endl;
 }
@@ -131,11 +131,30 @@ inline void test_graph_input_from_edge_list() {
 	std::size_t edges;
 	std::cin >> edges;
 
-	graph.update_from_edge_list(adj_matrix_graph::edge_adding_modes::directed, edges, std::cin);
+	graph.update_from_edge_list(adj_matrix_graph::edge_adding_modes::directed, adj_matrix_graph::input_numeration_modes::from_0, edges, std::cin);
 
 	graph.make_all_edges_bidirectional();
 
 	std::cout << graph << std::endl;
 }
 
+
+inline void test_graph_numeration_modes () {
+	adj_matrix_graph graph(3);
+
+	std::string request_for_1 = "1 2"
+							    "1 3"
+							    "2 3";
+
+	std::cout << graph << std::endl;
+	// 						    "1 0 1"
+	// 						    "0 1 1"
+	// 						    "0 1 1";
+
+	graph.add_edges_from_list(adj_matrix_graph::edge_adding_modes::directed, adj_matrix_graph::input_numeration_modes::from_1, 3, request_for_1);
+
+	std::cout << graph << std::endl;
+
+	graph.add_edges_from_list(adj_matrix_graph::edge_adding_modes::directed, adj_matrix_graph::input_numeration_modes::from_0, 3, request_for_1);
+}
 

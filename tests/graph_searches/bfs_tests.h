@@ -9,7 +9,7 @@
 inline void test_basic_bool_bfs() {
 	adj_matrix_graph test_graph(7);
 
-	test_graph.add_edges_from_list(adj_matrix_graph::edge_adding_modes::bidirectional, std::vector<std::pair<long long, long long>>{
+	test_graph.add_edges_from_list(adj_matrix_graph::edge_adding_modes::bidirectional, adj_matrix_graph::input_numeration_modes::from_0, std::vector<std::pair<long long, long long>>{
 			{0, 4},
 			{0, 5},
 			{4, 3},
@@ -37,7 +37,7 @@ inline void test_custom_graph_bfs () {
 	graph_matrix<test_type> test_graph(7);
 
 	test_graph.add_edges_from_list(
-			graph_matrix<test_type>::edge_adding_modes::bidirectional, std::vector<std::tuple<long long, long long, test_type>>{
+			graph_matrix<test_type>::edge_adding_modes::bidirectional, graph_matrix<test_type>::input_numeration_modes::from_0, std::vector<std::tuple<long long, long long, test_type>>{
 			{0, 4, 1},
 			{0, 5, 1},
 			{4, 3, 1},
