@@ -7,6 +7,10 @@
 
 int main ()
 {
+	/// Random:
+	// test_maxing_types();
+
+
 	/// Basic matrix graph tests:
 	// graph_creation_test();
 	// graph_operator_test();
@@ -33,7 +37,10 @@ int main ()
 
 	/// BFS:
 
-	test_basic_bfs();
+	test_basic_bool_bfs();
+	// test_custom_graph_bfs();
+
+
 
 	return 0;
 }
