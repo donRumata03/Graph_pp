@@ -9,7 +9,7 @@
 #include <queue>
 #include <functional>
 
-/*
+
 template<class Callable, class Graph_Element_T>
 void bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index, Callable callback) {
 	if (false) {
@@ -24,10 +24,10 @@ void bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index
 	assert(initial_vertex_index < graph.n);
 
 	// TODO!
-}*/
+}
 
-// template<class Callable>
-inline void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, const std::function<void (size_t, size_t)>& callback)
+template<class Callable>
+void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, /*const std::function<void (size_t, size_t)>&*/ Callable callback)
 {
 	if (false) {
 		size_t vertex_index = 0;
@@ -57,7 +57,8 @@ inline void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, co
 
 	std::vector<bool> viewed_vertexes(n, false);
 
-	// add_last(initial_vertex_index);
+
+
 	last_wave.push_back(initial_vertex_index);
 	viewed_vertexes[initial_vertex_index] = true;
 	callback(initial_vertex_index, 0); // Call function for initial vertex
@@ -80,17 +81,23 @@ inline void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, co
 		this_wave.clear();
 
 		// DEBUG:
-		std::cout << "Capacity: " << this_wave.capacity() << std::endl;
+		// std::cout << "Capacity: this: " << this_wave.capacity() << "; last: " << last_wave.capacity() << std::endl;
+
+		++iteration_number;
 	}
 }
 
-template<class Graph_Element_T>
+template<
+		class Graph_Element_T,
+		typename res_type = std::conditional<std::is_floating_point_v<Graph_Element_T>, double, long long>,
+		typename std::enable_if<std::is_floating_point_v<Graph_Element_T> || (std::is_integral_v<Graph_Element_T> && !std::is_same_v<Graph_Element_T, bool>)>* = nullptr
+        >
 std::vector<Graph_Element_T> bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index) {
-	std::vector<Graph_Element_T> res;
-	res.assign(graph.n, std::numeric_limits<Graph_Element_T>::max());
+	std::vector<res_type> res;
+	res.assign(graph.n, std::numeric_limits<res_type>::max());
 
 	bfs(graph, [&](size_t vertex_index, size_t iteration){
-		res[vertex_index] = iteration;
+		res[vertex_index] = res_type(iteration);
 	});
 
 	return res;

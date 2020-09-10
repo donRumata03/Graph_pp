@@ -24,7 +24,9 @@ inline void test_basic_bfs() {
 
 	std::vector<long long> bfs_res = bfs(test_graph, 0);
 
+	size_t index = 0;
 	for(auto& elem : bfs_res) {
-		std::cout << elem << " ";
+		std::cout << index << " : " << elem << "\n";
+		index++;
 	} std::cout << std::endl;
 }
