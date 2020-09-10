@@ -62,7 +62,7 @@ public:
 	void resize(size_t new_size);
 	void release();
 
-	void fill_default(); // TODO: fill with std::numeric_limits<T>::max but not with 0!!!
+	void fill_default();
 
 	/// 														 Edge access:
 	[[nodiscard]] bool has_edge(size_t from, size_t to) const;
@@ -73,12 +73,12 @@ public:
 	void set_bidirectional_edge(size_t from, size_t to, const T& value);
 
 	template<class Functor>
-	void for_vertex_children (size_t vertex_index, const Functor &functor) const;
+	void for_vertex_children (size_t starting_vertex_index, const Functor &functor) const;
 
 	[[nodiscard]] std::vector<size_t> get_vertex_children (size_t starting_vertex_index) const;
 
 	template<class Functor>
-	void for_vertex_parents (size_t vertex_index, const Functor &functor) const;
+	void for_vertex_parents (size_t starting_vertex_index, const Functor &functor) const;
 
 	[[nodiscard]] std::vector<size_t> get_vertex_parents (size_t starting_vertex_index) const;
 
@@ -128,7 +128,7 @@ public:
 		directed        // given edges are passable only in the given direction
 	};
 
-	// TODO: add two types for input numeration: from 0 and from 1
+	// TODO: add two types for input numeration: from 0 and from 1!!!!!!
 
 	/// For BOOL matrices:
 
@@ -140,7 +140,6 @@ public:
 	void update_from_edge_list (edge_adding_modes directionality,
 	                            const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges);
 
-	void make_all_edges_bidirectional();
 
 	/// For ALL matrices <b>except bool</b>:
 
@@ -186,6 +185,8 @@ public:
 	void update_from_edge_list(edge_adding_modes directionality, size_t edge_list_size, InputStream& input_stream);
 	void update_from_edge_list(edge_adding_modes directionality, size_t edge_list_size, const std::string& char_source);
 
+	/// 															Common operations with graph matrices:
+	void make_all_edges_bidirectional();
 };
 
 

@@ -262,14 +262,14 @@ void graph_matrix<T>::set_bidirectional_edge (size_t from, size_t to, const T &v
 /**
  * Applies the functor to all the vertexes to which it`s possible to come from the given vertex THROUGH one edge
  * @param functor: the functor to apply
- * @param vertex_index: the initial vertex index
+ * @param starting_vertex_index: the initial vertex index
  */
 template <class T>
 template <class Functor>
-void graph_matrix<T>::for_vertex_children (size_t vertex_index, const Functor &functor) const
+void graph_matrix<T>::for_vertex_children (size_t starting_vertex_index, const Functor &functor) const
 {
 	for (size_t target_index = 0; target_index < n; ++target_index) {
-		if (data[vertex_index][target_index]) {
+		if (starting_vertex_index != target_index && has_edge(starting_vertex_index, target_index)) {
 			functor(target_index);
 		}
 	}
@@ -284,7 +284,7 @@ std::vector<size_t> graph_matrix<T>::get_vertex_children (size_t starting_vertex
 
 	// for_vertex_children(starting_vertex_index, [&](size_t index){ res.push_back(index); });
 	for (size_t target_index = 0; target_index < n; ++target_index) {
-		if (data[starting_vertex_index][target_index]) {
+		if (starting_vertex_index != target_index && has_edge(starting_vertex_index, target_index)) {
 			res.push_back(target_index);
 		}
 	}
@@ -296,10 +296,10 @@ std::vector<size_t> graph_matrix<T>::get_vertex_children (size_t starting_vertex
 
 template <class T>
 template <class Functor>
-void graph_matrix<T>::for_vertex_parents (size_t vertex_index, const Functor &functor) const
+void graph_matrix<T>::for_vertex_parents (size_t starting_vertex_index, const Functor &functor) const
 {
 	for (size_t target_index = 0; target_index < n; ++target_index) {
-		if (data[target_index][vertex_index]) {
+		if (starting_vertex_index != target_index && has_edge(target_index, starting_vertex_index)) {
 			functor(target_index);
 		}
 	}
@@ -313,7 +313,7 @@ std::vector<size_t> graph_matrix<T>::get_vertex_parents (size_t starting_vertex_
 
 	// for_vertex_parents(starting_vertex_index, [&](size_t index){ res.push_back(index); });
 	for (size_t target_index = 0; target_index < n; ++target_index) {
-		if (data[target_index][starting_vertex_index]) {
+		if (starting_vertex_index != target_index && has_edge(target_index, starting_vertex_index)) {
 			res.push_back(target_index);
 		}
 	}
@@ -580,16 +580,24 @@ void graph_matrix<T>::update_from_edge_list (graph_matrix::edge_adding_modes dir
 	return update_from_edge_list(directionality, edge_list_size, stream);
 }
 
+/// ********************************************* Common operations with graph matrices: *********************************************
+
 template <class T>
 void graph_matrix<T>::make_all_edges_bidirectional ()
 {
-	static_assert(std::is_same_v<T, bool>, "the type should be bool");
+	// static_assert(std::is_same_v<T, bool>, "the type should be bool");
 
 	for (size_t i = 0; i < n; ++i) {
-		for (size_t j = 0; j <= i; ++j) {
-			bool has_some_edge = data[i][j] || data[j][i];
-			data[i][j] = has_some_edge;
-			data[j][i] = has_some_edge;
+		for (size_t j = 0; j < i; ++j) {
+			if constexpr (std::is_same_v<T, bool>) {
+				bool has_some_edge = has_edge(i, j) || has_edge(j, i);
+				get_edge(i, j) = has_some_edge;
+				get_edge(j, i) = has_some_edge;
+			}
+			else {
+				if (!has_edge(i, j)) get_edge(i, j) = get_edge(j, i);
+				if (!has_edge(j, i)) get_edge(j, i) = get_edge(i, j);
+			}
 		}
 	}
 }
