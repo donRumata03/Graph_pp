@@ -66,14 +66,14 @@ public:
 	void set_bidirectional_edge(size_t from, size_t to, const T& value);
 
 	template<class Functor>
-	void for_vertex_children (size_t vertex_index, const Functor &functor);
+	void for_vertex_children (size_t vertex_index, const Functor &functor) const;
 
-	std::vector<size_t> get_vertex_children (size_t starting_vertex_index);
+	std::vector<size_t> get_vertex_children (size_t starting_vertex_index) const;
 
 	template<class Functor>
-	void for_vertex_parents (size_t vertex_index, const Functor &functor);
+	void for_vertex_parents (size_t vertex_index, const Functor &functor) const;
 
-	std::vector<size_t> get_vertex_parents (size_t starting_vertex_index);
+	std::vector<size_t> get_vertex_parents (size_t starting_vertex_index) const;
 
 	/// 														Operator []:
 	template<class Type>
@@ -120,6 +120,8 @@ public:
 		bidirectional,  // given edges are passable in both directions
 		directed        // given edges are passable only in the given direction
 	};
+
+	// TODO: add two types for input numeration: from 0 and from 1
 
 	/// For BOOL matrices:
 

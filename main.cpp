@@ -33,5 +33,7 @@ int main ()
 
 	/// BFS:
 
+	test_basic_bfs();
+
 	return 0;
 }

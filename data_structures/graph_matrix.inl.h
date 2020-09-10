@@ -211,7 +211,7 @@ void graph_matrix<T>::set_bidirectional_edge (size_t from, size_t to, const T &v
  */
 template <class T>
 template <class Functor>
-void graph_matrix<T>::for_vertex_children (size_t vertex_index, const Functor &functor)
+void graph_matrix<T>::for_vertex_children (size_t vertex_index, const Functor &functor) const
 {
 	for (size_t target_index = 0; target_index < n; ++target_index) {
 		if (data[vertex_index][target_index]) {
@@ -222,7 +222,7 @@ void graph_matrix<T>::for_vertex_children (size_t vertex_index, const Functor &f
 
 
 template <class T>
-std::vector<size_t> graph_matrix<T>::get_vertex_children (size_t starting_vertex_index)
+std::vector<size_t> graph_matrix<T>::get_vertex_children (size_t starting_vertex_index) const
 {
 	std::vector<size_t> res;
 	res.reserve(n);
@@ -241,7 +241,7 @@ std::vector<size_t> graph_matrix<T>::get_vertex_children (size_t starting_vertex
 
 template <class T>
 template <class Functor>
-void graph_matrix<T>::for_vertex_parents (size_t vertex_index, const Functor &functor)
+void graph_matrix<T>::for_vertex_parents (size_t vertex_index, const Functor &functor) const
 {
 	for (size_t target_index = 0; target_index < n; ++target_index) {
 		if (data[target_index][vertex_index]) {
@@ -251,7 +251,7 @@ void graph_matrix<T>::for_vertex_parents (size_t vertex_index, const Functor &fu
 }
 
 template <class T>
-std::vector<size_t> graph_matrix<T>::get_vertex_parents (size_t starting_vertex_index)
+std::vector<size_t> graph_matrix<T>::get_vertex_parents (size_t starting_vertex_index) const
 {
 	std::vector<size_t> res;
 	res.reserve(n);
