@@ -1,4 +1,5 @@
 #include <test_cases/simple_bfs_with_restoring.h>
+#include <test_cases/chess_horse_bfs.h>
 #include "tests/random_tests.h"
 
 #include "tests/graph_matrix/basic_graph_matrix_tests.h"
@@ -52,7 +53,9 @@ int main ()
     // test_simulated_restoring();
 
     /// Real test-cases:
-	simple_bfs_with_restoring();
+	// simple_bfs_with_restoring();
+
+	chess_horse_bfs();
 
 	return 0;
 }
