@@ -29,7 +29,7 @@ int main ()
 	// matrix_graph_input_test();
 	// test_graph_input_from_edge_list();
 
-	test_graph_numeration_modes();
+	// test_graph_numeration_modes();
 
 	/// Matrix graph memory management tests:
 
@@ -44,11 +44,11 @@ int main ()
 
 	/// BFS:
 
-	// test_basic_bool_bfs();
+	test_basic_bool_bfs();
 	// test_custom_graph_bfs();
 
     /// Restoring:
-    test_simulated_restoring();
+    // test_simulated_restoring();
 
 	return 0;
 }

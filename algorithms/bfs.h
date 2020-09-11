@@ -16,9 +16,10 @@ void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, /*const s
 	if (false) {
 		size_t vertex_index = 0;
 		size_t iteration = 0;
+		size_t parent_index = 0;
 
 		// Causes compiler error if your function has false format:
-		callback(vertex_index, iteration);
+		callback(parent_index, vertex_index, iteration);
 	}
 
 
@@ -45,10 +46,10 @@ void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, /*const s
 
 	size_t iteration_number = 0;
 
-	auto process_verified_vertex = [&](size_t vertex_index){
+	auto process_verified_vertex = [&](size_t parent_index, size_t vertex_index){
 		this_wave.push_back(vertex_index);
 		viewed_vertexes[vertex_index] = true;
-		callback(vertex_index, iteration_number);
+		callback(parent_index, vertex_index, iteration_number);
 	};
 
 	auto exchange_waves = [&](){
@@ -61,7 +62,7 @@ void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, /*const s
 //	viewed_vertexes[initial_vertex_index] = true;
 //	callback(initial_vertex_index, 0); // Call function for initial vertex
 
-	process_verified_vertex(initial_vertex_index);
+	process_verified_vertex(size_t(-1), initial_vertex_index);
 	exchange_waves();
 
 	++iteration_number;
@@ -73,7 +74,7 @@ void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, /*const s
 //					callback(new_vert, iteration_number);
 //					viewed_vertexes[new_vert] = true;
 //					this_wave.push_back(new_vert);
-					process_verified_vertex(new_vert);
+					process_verified_vertex(prev_vert_index, new_vert);
 				}
 			}
 		}
@@ -145,15 +146,19 @@ void bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index
 }
 
 
-inline std::vector<long long> bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index) {
+inline std::pair<std::vector<long long>, std::vector<long long>> bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index) {
 	std::vector<long long> res;
 	res.assign(graph.n, std::numeric_limits<long long>::max());
 
-	bfs(graph, initial_vertex_index, [&](size_t vertex_index, size_t iteration){
+	std::vector<long long> parent_pointers(graph.n, size_t(-1));
+
+
+	bfs(graph, initial_vertex_index, [&](size_t parent_index, size_t vertex_index, size_t iteration){
 		res[vertex_index] = iteration;
+		parent_pointers[vertex_index] = parent_index;
 	});
 
-	return res;
+	return { res, parent_pointers };
 }
 
 
@@ -169,7 +174,7 @@ std::vector<Graph_Element_T> bfs(const graph_matrix<Graph_Element_T>& graph, siz
 	std::vector<res_type> res;
 	res.assign(graph.n, std::numeric_limits<res_type>::max());
 
-	bfs(graph, [&](size_t vertex_index, size_t iteration, size_t path_length){
+	bfs(graph, [&](size_t parent_index, size_t vertex_index, size_t iteration, size_t path_length){
 		res[vertex_index] = res_type(iteration);
 	});
 

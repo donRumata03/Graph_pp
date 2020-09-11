@@ -142,9 +142,9 @@ inline void test_graph_input_from_edge_list() {
 inline void test_graph_numeration_modes () {
 	adj_matrix_graph graph(3);
 
-	std::string request_for_1 = "1 2"
-							    "1 3"
-							    "2 3";
+	std::string request_for_1 = "1 2\n"
+							    "1 3\n"
+							    "2 3\n";
 
 	std::cout << graph << std::endl;
 	// 						    "1 0 1"

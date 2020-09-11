@@ -22,11 +22,11 @@ inline void test_basic_bool_bfs() {
 
 	std::cout << test_graph << std::endl;
 
-	std::vector<long long> bfs_res = bfs(test_graph, 0);
+	/*std::vector<long long>*/auto [bfs_res, parents] = bfs(test_graph, 0);
 
 	size_t index = 0;
 	for(auto& elem : bfs_res) {
-		std::cout << index << " : " << elem << "\n";
+		std::cout << index << " : dist=" << elem << "; parent=" << parents[index] << "\n";
 		index++;
 	} std::cout << std::endl;
 }
