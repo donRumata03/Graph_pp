@@ -1,3 +1,11 @@
+/*
+#define IS_SINGLE_INCLUDE_TEST
+
+#ifndef IS_SINGLE_INCLUDE_TEST
+
+*/
+
+
 #include <test_cases/simple_bfs_with_restoring.h>
 #include <test_cases/chess_horse_bfs.h>
 #include "tests/random_tests.h"
@@ -59,3 +67,19 @@ int main ()
 
 	return 0;
 }
+
+/*
+#else
+
+/// If it`s single include test:
+
+#include <tests/header_collection_tests/1.0.0_test.h>
+
+int main () {
+	test_first_version_of_library();
+}
+
+#endif
+ */
+
+

@@ -4,10 +4,10 @@
 
 #pragma once
 
-/// ********************************************* Memory management: *********************************************
-
-
 #include "graph_matrix.h"
+
+
+/// ********************************************* Memory management: *********************************************
 
 template < class T >
 void graph_matrix<T>::fill_matrix (const T &element)
