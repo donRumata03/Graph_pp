@@ -74,3 +74,8 @@ inline void test_std_numeric_limits() {
 
 	std::cout << std::numeric_limits<long long>::infinity() << " " << std::numeric_limits<long long>::epsilon() << std::endl;
 }
+
+
+inline void test_string_npos_and_size_t_minus1 () {
+	std::cout << std::boolalpha << (std::numeric_limits<size_t>::max() == size_t(-1) && size_t(-1) == std::string::npos) << std::endl;
+}

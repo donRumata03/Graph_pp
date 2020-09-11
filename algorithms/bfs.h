@@ -145,20 +145,22 @@ void bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index
 	}
 }
 
+/**
+ * @returns: pair of distance and parent pointer vector
+ */
+inline std::pair<std::vector<size_t>, std::vector<size_t>> bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index) {
+	std::vector<size_t> distances;
+	distances.assign(graph.n, std::numeric_limits<size_t>::max());
 
-inline std::pair<std::vector<long long>, std::vector<long long>> bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index) {
-	std::vector<long long> res;
-	res.assign(graph.n, std::numeric_limits<long long>::max());
-
-	std::vector<long long> parent_pointers(graph.n, size_t(-1));
+	std::vector<size_t> parent_pointers(graph.n, size_t(-1));
 
 
 	bfs(graph, initial_vertex_index, [&](size_t parent_index, size_t vertex_index, size_t iteration){
-		res[vertex_index] = iteration;
+		distances[vertex_index] = iteration;
 		parent_pointers[vertex_index] = parent_index;
 	});
 
-	return { res, parent_pointers };
+	return { distances, parent_pointers };
 }
 
 
