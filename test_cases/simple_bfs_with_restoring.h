@@ -22,8 +22,32 @@
     ^^^ Output should be:
     3
     3 2 1 5
+
+2)  5
+	0 1 0 0 1
+	1 0 1 0 0
+	0 1 0 0 0
+	0 0 0 0 0
+	1 0 0 0 0
+	3 4
+
+    ^^^ Output should be:
+    -1
+
+3)  5
+	0 1 0 0 1
+	1 0 1 0 0
+	0 1 0 0 0
+	0 0 0 0 0
+	1 0 0 0 0
+	3 3
+
+    ^^^ Output should be:
+    0
+
  *
  */
+/// All tests passed!
 inline void simple_bfs_with_restoring() {
 	size_t n;
 	std::cin >> n;
