@@ -22,4 +22,4 @@ add_executable(Graphs
         tests/random_tests.h
         tests/graph_searches/bfs_tests.h
 
-        algorithms/path_restorer.cpp algorithms/path_restorer.h)
+        algorithms/path_restorer.cpp algorithms/path_restorer.h test_cases/simple_bfs_with_restoring.h tests/util_tests/graph_restoring_test.h)

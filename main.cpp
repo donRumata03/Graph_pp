@@ -4,6 +4,7 @@
 #include "tests/graph_matrix/memory_management_tests.h"
 
 #include "tests/graph_searches/bfs_tests.h"
+#include "tests/util_tests/graph_restoring_test.h"
 
 int main ()
 {
@@ -46,7 +47,8 @@ int main ()
 	// test_basic_bool_bfs();
 	// test_custom_graph_bfs();
 
-
+    /// Restoring:
+    test_simulated_restoring();
 
 	return 0;
 }

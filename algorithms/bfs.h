@@ -89,7 +89,7 @@ void bfs(const graph_matrix<bool>& graph, size_t initial_vertex_index, /*const s
 
 template<class Callable, class Graph_Element_T, typename std::enable_if_t<!std::is_same_v<Graph_Element_T, bool>, int>* = nullptr>
 void bfs(const graph_matrix<Graph_Element_T>& graph, size_t initial_vertex_index, Callable callback) {
-	using distance_type = typename maximize_type<Graph_Element_T>;
+	using distance_type = maximize_type<Graph_Element_T>;
 
 	constexpr distance_type infinity = std::numeric_limits<distance_type>::max();
 
