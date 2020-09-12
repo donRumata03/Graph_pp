@@ -1147,3 +1147,104 @@ inline std::vector<size_t> restore_path(const std::vector<size_t> &parents, size
 
     return res_path;
 }
+
+
+/// ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+
+/*
+ * Test cases for this task:
+1)  5
+	0 1 0 0 1
+	1 0 1 0 0
+	0 1 0 0 0
+	0 0 0 0 0
+	1 0 0 0 0
+	3 5
+
+    ^^^ Output should be:
+    3
+    3 2 1 5
+
+2)  5
+	0 1 0 0 1
+	1 0 1 0 0
+	0 1 0 0 0
+	0 0 0 0 0
+	1 0 0 0 0
+	3 4
+
+    ^^^ Output should be:
+    -1
+
+3)  5
+	0 1 0 0 1
+	1 0 1 0 0
+	0 1 0 0 0
+	0 0 0 0 0
+	1 0 0 0 0
+	3 3
+
+    ^^^ Output should be:
+    0
+
+ *
+ */
+/// All tests passed!
+inline void simple_bfs_with_restoring() {
+    size_t n;
+    std::cin >> n;
+
+    adj_matrix_graph graph(n);
+    std::cin >> graph;
+
+    size_t vertex_from, vertex_to;
+    std::cin >> vertex_from >> vertex_to;
+
+    vertex_from--;
+    vertex_to--;
+
+    auto tp  = bfs(graph, vertex_from);
+
+    auto &distances = tp.first;
+    auto& parent_vector = tp.second;
+
+    size_t distance = distances[vertex_to];
+
+    // If there is no path:
+    if (distance == size_t(-1)) {
+        std::cout << -1 << std::endl;
+        return;
+    }
+
+    // Find path otherwise:
+    std::vector<size_t> path = restore_path(parent_vector, vertex_from, vertex_to);
+
+    // Output result:
+    std::cout << distance << std::endl;
+
+    if (distance) {
+        // Output the path if it`s not zero:
+        for (unsigned long long i : path) {
+            std::cout << i + 1 << " ";
+        }
+    }
+    std::cout << std::endl;
+}
+
+
+int main () {
+    simple_bfs_with_restoring();
+
+    return 0;
+}
+
+/**
+ * To compile and run this:
+
+ g++ -std=c++2a -o tests/task_tests/task_A_BFS.o -I. full_task_solutions/task_A_BFS.cpp
+
+ tests/task_tests/task_A_BFS.o
+
+ */
+
