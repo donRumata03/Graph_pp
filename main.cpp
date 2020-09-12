@@ -62,8 +62,7 @@ int main ()
 
     /// Real test-cases:
 	// simple_bfs_with_restoring();
-
-	chess_horse_bfs();
+	// chess_horse_bfs();
 
 	return 0;
 }

@@ -5,15 +5,29 @@
 #pragma once
 
 #include "data_structures/graphs.h"
+#include <stdexcept>
 
 /**
  * Returns the distances
  */
-template<class T>
+template<class T, typename std::enable_if<!std::is_same<T, bool>::value, int>::type* = nullptr>
 void dijkstra(const graph_matrix<T>& graph, const std::vector<size_t>& initial_vertexes) {
     using distance_type = maximize_type<T>;
     constexpr distance_type infinity = std::numeric_limits<distance_type>::max();
+    constexpr bool T_is_signed = std::is_signed<T>::value;
     auto n = graph.n;
+
+    // Perform pre-checks:
+    for (size_t vertex_index : initial_vertexes) if (vertex_index >= n) throw std::out_of_range("Vertex index "s + std::to_string(vertex_index) + " is out of range!");
+
+    if constexpr (T_is_signed) {
+	    for (size_t i = 0; i < n; ++i) {
+		    for (size_t j = 0; j < n; ++j) {
+			    // Asert that all the edges are >= than 0:
+				if (graph[i][j] < 0) throw std::out_of_range("Graph edge weights for Dijkstra should`n be less than 0!");
+		    }
+	    }
+    }
 
     std::vector<bool> has_known_distance(n, false);
     std::vector<distance_type> distance(n, infinity);
