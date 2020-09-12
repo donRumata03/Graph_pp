@@ -96,13 +96,13 @@ public:
 	};
 
 #if defined(NDEBUG)
-	T* operator[] (size_t index) {
-		return data[index];
+	T* operator[] (size_t index) const {
+		return const_cast<T*>(data[index]);
 	}
 #else
-	col_t<T> operator[] (size_t index) {
+	col_t<T> operator[] (size_t index) const {
 		assert(index < n);
-		return col_t<T> { data[index], n };
+		return col_t<T> { const_cast<T*>(data[index]), n };
 	}
 #endif
 

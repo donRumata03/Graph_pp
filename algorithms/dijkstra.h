@@ -6,12 +6,14 @@
 
 #include "data_structures/graphs.h"
 #include <stdexcept>
+#include <utility>
 
 /**
- * Returns the distances
+ * Returns the vector distances from the nearest of the initial points for each point
+ * 			and parents for each one in the path from the nearest initial vertex
  */
 template<class T, typename std::enable_if<!std::is_same<T, bool>::value, int>::type* = nullptr>
-void dijkstra(const graph_matrix<T>& graph, const std::vector<size_t>& initial_vertexes) {
+std::pair<std::vector<maximize_type<T>>, std::vector<size_t>> dijkstra(const graph_matrix<T>& graph, const std::vector<size_t>& initial_vertexes) {
     using distance_type = maximize_type<T>;
     constexpr distance_type infinity = std::numeric_limits<distance_type>::max();
     constexpr bool T_is_signed = std::is_signed<T>::value;
@@ -62,5 +64,13 @@ void dijkstra(const graph_matrix<T>& graph, const std::vector<size_t>& initial_v
         }
     }
 
-    // TODO: return!!!
+	return {
+    	distance, parents
+    };
+}
+
+template<class T, typename std::enable_if<!std::is_same<T, bool>::value, int>::type* = nullptr>
+std::pair<std::vector<maximize_type<T>>, std::vector<size_t>> dijkstra(const graph_matrix<T>& graph, size_t initial_vertex)
+{
+	return dijkstra(graph, std::vector<size_t>{initial_vertex});
 }
