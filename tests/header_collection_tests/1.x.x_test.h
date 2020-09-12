@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "single_include_headers/graph++_1.0.0.h"
+#include "single_include_headers/graph++_1.x.x.h"
 
 inline void test_first_version_of_library() {
 	size_t n;
