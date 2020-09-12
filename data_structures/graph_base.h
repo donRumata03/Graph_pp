@@ -12,7 +12,10 @@
 #include <algorithm>
 #include <ostream>
 
+#ifdef WIN32
 #include <execution>
+#endif
+
 #include <cassert>
 #include <iomanip>
 
