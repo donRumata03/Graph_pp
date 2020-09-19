@@ -8,6 +8,8 @@
 
 template<class T>
 std::pair<std::vector<T>, std::vector<size_t>> ford_bellman(const graph_matrix<T>& graph, size_t initial_vertex) {
+	// TODO: Make also version for edge list graph representation (because it`s currently O(n^3), which isn`t ideal)
+
 	using length_t = maximize_type<T>;
 	constexpr auto infinity = graph.infinity;
 	auto n = graph.n;
@@ -28,8 +30,9 @@ std::pair<std::vector<T>, std::vector<size_t>> ford_bellman(const graph_matrix<T
 
 			for (size_t parent_vertex : graph.get_vertex_parents(v)) {
 				// If there are no infinite-length edges
-				d[v][iteration] = min(d[v][iteration], d[parent_vertex][iteration - 1] + graph.get_edge(parent_vertex, v));
-
+				if (d[parent_vertex][iteration - 1] != infinity && graph.get_edge(parent_vertex, v) != infinity) {
+					d[v][iteration] = min(d[v][iteration], d[parent_vertex][iteration - 1] + graph.get_edge(parent_vertex, v));
+				}
 			}
 		}
 	}

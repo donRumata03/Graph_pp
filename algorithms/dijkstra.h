@@ -14,7 +14,9 @@
  */
 template<class T, typename std::enable_if<!std::is_same<T, bool>::value, int>::type* = nullptr>
 std::pair<std::vector<maximize_type<T>>, std::vector<size_t>> dijkstra(const graph_matrix<T>& graph, const std::vector<size_t>& initial_vertexes) {
-    using distance_type = maximize_type<T>;
+    // TODO: add version for edge list graph representation!
+
+	using distance_type = maximize_type<T>;
     constexpr distance_type infinity = std::numeric_limits<distance_type>::max();
     constexpr bool T_is_signed = std::is_signed<T>::value;
     auto n = graph.n;
@@ -57,7 +59,7 @@ std::pair<std::vector<maximize_type<T>>, std::vector<size_t>> dijkstra(const gra
         for (auto& next_vertex_index : graph.get_vertex_children(vertex_index)) {
             auto len = graph[vertex_index][next_vertex_index];
 
-            if (distance[vertex_index] + len < distance[next_vertex_index]) {
+            if (distance[vertex_index] != infinity && len != infinity && distance[vertex_index] + len < distance[next_vertex_index]) {
                 distance[next_vertex_index] = distance[vertex_index] + len;
                 parents[next_vertex_index] = vertex_index;
             }
