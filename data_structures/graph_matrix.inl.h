@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "graph_matrix.h"
+// #include "graph_matrix.h"
 
 
 /// ********************************************* Memory management: *********************************************
@@ -13,7 +13,11 @@ template < class T >
 void graph_matrix<T>::fill_matrix (const T &element)
 {
 	for (size_t i = 0; i < n; ++i) {
+#ifdef WIN32
 		std::fill(std::execution::par_unseq, data[i], data[i] + n, element);
+#else
+        std::fill(data[i], data[i] + n, element);
+#endif
 	}
 }
 
@@ -90,7 +94,11 @@ graph_matrix<T>::graph_matrix (const graph_matrix &other)
 	alloc(other.n);
 
 	for (size_t i = 0; i < n; ++i) {
+#ifdef WIN32
 		std::copy(std::execution::par_unseq, other.data[i], other.data[i] + n, this->data[i]);
+#else
+        std::copy(other.data[i], other.data[i] + n, this->data[i]);
+#endif
 	}
 }
 
@@ -118,7 +126,12 @@ graph_matrix<T> &graph_matrix<T>::operator= (const graph_matrix &other)
 
 		// Actual copying:
 		for (size_t i = 0; i < n; ++i) {
-			std::copy(std::execution::par_unseq, other.data[i], other.data[i] + n, this->data[i]);
+			// std::copy(std::execution::par_unseq, other.data[i], other.data[i] + n, this->data[i]);
+#ifdef WIN32
+            std::copy(std::execution::par_unseq, other.data[i], other.data[i] + n, this->data[i]);
+#else
+            std::copy(other.data[i], other.data[i] + n, this->data[i]);
+#endif
 		}
 	}
 

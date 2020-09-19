@@ -2,7 +2,7 @@
 // Created by Vova on 12.09.2020.
 //
 
-#include "tests/header_collection_tests/1.0.0_test.h"
+#include "tests/header_collection_tests/1.x.x_test.h"
 
 /*
  * To start test:

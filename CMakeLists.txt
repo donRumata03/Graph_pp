@@ -33,7 +33,11 @@ add_executable(Graphs
 
         # tests/header_collection_tests/1.0.0_test.h
 
-        algorithms/ford_bellman.h)
+        algorithms/ford_bellman.h
+
+        algorithms/dijkstra.h
+        tests/graph_searches/djikstra_test.h
+)
 
 project(single_include_header_tester)
 add_executable(single_include_header_tester single_include_header_tester.cpp)
