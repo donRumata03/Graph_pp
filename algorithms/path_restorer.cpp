@@ -45,3 +45,10 @@ std::vector<size_t> restore_path(const std::vector<size_t> &parents, size_t path
 
     return res_path;
 }
+
+std::vector<size_t>
+restore_path (const std::vector<std::vector<size_t>> &parent_matrix, size_t path_start, size_t path_end)
+{
+	// TODO: implement restoring!
+	return std::vector<size_t>();
+}

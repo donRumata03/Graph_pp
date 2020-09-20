@@ -407,10 +407,9 @@ OutputStream& operator<< (OutputStream &os, const graph_matrix<Type> &graph)
 /// ********************************************* Graph inputting from parsed data: *********************************************
 
 template < class T >
-template <class Vertex_indexing_type >
 void
 graph_matrix<T>::add_edges_from_list (edge_adding_modes directionality, input_numeration_modes numeration_mode,
-                                      const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
+                                      const std::vector<edge> &edges)
 {
 	/*
 	static_assert(
@@ -419,7 +418,7 @@ graph_matrix<T>::add_edges_from_list (edge_adding_modes directionality, input_nu
 	);
 	*/
 
-	static_assert(std::is_integral_v<Vertex_indexing_type>, "Vertex indexing type should be an integral type");
+	// Not needed anymore: static_assert(std::is_integral_v<Vertex_indexing_type>, "Vertex indexing type should be an integral type");
 	static_assert(std::is_same_v<T, bool> , "T (graph template parameter) should bool to use this input mode");
 
 	for (auto& p : edges) {
@@ -445,9 +444,8 @@ graph_matrix<T>::add_edges_from_list (edge_adding_modes directionality, input_nu
 }
 
 template <class T>
-template </*class input_directionality_type, */class Vertex_indexing_type>
 void graph_matrix<T>::update_from_edge_list (edge_adding_modes directionality, input_numeration_modes numeration_mode,
-		const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges)
+		const std::vector<edge> &edges)
 {
 	/// Reset all edges and add the ones from the list:
 	fill_default();

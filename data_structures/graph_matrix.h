@@ -5,6 +5,7 @@
 #pragma once
 
 #include "graph_base.h"
+#include "edge.h"
 
 
 template <class T>
@@ -122,28 +123,17 @@ public:
 	// struct input_bidirectional {};
 	// struct input_one_directional {};
 
-	/// The way edges will be added:
-	enum class edge_adding_modes {
-		bidirectional,  // given edges are passable in both directions
-		directed        // given edges are passable only in the given direction
-	};
 
-	enum class input_numeration_modes {
-		from_0, // Computers and programmers via computers usually number from 0 ;)
-		from_1  // Users and task checkers usually number from 1
-	};
 
 	// TODO: move the enumclasses outside the class scope!
 
 	/// For BOOL matrices:
 
-	template<class Vertex_indexing_type>
 	void add_edges_from_list (edge_adding_modes directionality, input_numeration_modes numeration_mode,
-	                          const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges);
+	                          const std::vector<edge> &edges);
 
-	template</*class input_directionality_type, */class Vertex_indexing_type>
 	void update_from_edge_list (edge_adding_modes directionality, input_numeration_modes numeration_mode,
-	                            const std::vector<std::pair<Vertex_indexing_type, Vertex_indexing_type>> &edges);
+	                            const std::vector<edge> &edges);
 
 
 	/// For ALL matrices <b>except bool</b>:

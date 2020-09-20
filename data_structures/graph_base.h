@@ -67,3 +67,16 @@ namespace detail
 template<class T>
 using maximize_type = typename detail::maximize_type_impl<T>::type;
 
+
+
+/// The way edges will be added:
+enum class edge_adding_modes {
+	bidirectional,  // given edges are passable in both directions
+	directed        // given edges are passable only in the given direction
+};
+
+/// Indexing from 0 and from 1:
+enum class input_numeration_modes {
+	from_0, // Computers and programmers via computers usually number from 0 ;)
+	from_1  // Users and task checkers usually number from 1
+};

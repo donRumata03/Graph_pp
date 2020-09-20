@@ -68,8 +68,11 @@ int main ()
 	/// Dijkstra:
 	basic_dijkstra_test();
 
-	// TODO: add Floyd algorithm
-	// TODO: add new data structure <graph representation> through list of neighboring vertexes for each one
+	/// Ford-Bellman:
+	// todo
+
+	/// Floyd:
+	// todo
 
 	return 0;
 }

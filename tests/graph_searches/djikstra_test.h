@@ -32,8 +32,8 @@ inline void basic_dijkstra_test() {
 	// std::cout << sizeof(size_t) << " " << sizeof(long) << " " << sizeof(long long) << std::endl; // 8 8 8
 
 	graph.add_edges_from_list(
-			max_int_weighted_matrix_graph::edge_adding_modes::bidirectional,
-			max_int_weighted_matrix_graph::input_numeration_modes::from_0,
+			edge_adding_modes::bidirectional,
+			input_numeration_modes::from_0,
 			edges_to_add);
 
 	std::cout << graph << std::endl;

@@ -37,7 +37,11 @@ add_executable(Graphs
 
         algorithms/dijkstra.h
         tests/graph_searches/djikstra_test.h
-        algorithms/floyd.h)
+        algorithms/floyd.h
+        data_structures/edge.h
+
+
+        tests/graph_searches/ford_bellman_test.h tests/graph_searches/floyd_test.h tests/graph_searches/gs_test_base.h)
 
 project(single_include_header_tester)
 add_executable(single_include_header_tester single_include_header_tester.cpp)
