@@ -35,3 +35,19 @@
 
         times_in[v] = time
         time += 1        
+
+# Solving task about being parent using the above algorithm
+
+# Topological sort
+
+We have a set of rules about pairs of vertexes which state which one should be situated in the path before the other.
+Run DFS with timing, then sort by exiting time.
+If there are no cycles, the problem hasn't any solutions. However, using this algorithm, we'll get some answer. To verify it, we should check all the edges if their direction is appropriate or not.
+
+# Checking if there are some cycles:
+Mark vertexes as:
+- Have never been there  (white)
+- Is in the call stack   (grey)
+- Has come out from them (black)
+
+Cycle if came to grey vertex
